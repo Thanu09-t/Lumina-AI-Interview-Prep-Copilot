@@ -429,6 +429,9 @@
     <div id="simulation-controls-bar" class="hidden fixed bottom-12 left-1/2 -translate-x-1/2 w-[92%] max-w-4xl flex flex-col items-center gap-4 z-50">
         <!-- Text Response Input Box -->
         <div class="w-full liquid-glass-strong rounded-full px-6 py-2.5 flex items-center gap-4 shadow-[0_20px_50px_rgba(0,0,0,0.6)] backdrop-blur-2xl border border-white/20">
+            <button onclick="toggleDictation()" id="dictation-btn" title="Voice Dictation" class="bg-white/5 hover:bg-white/10 text-on-surface-variant w-11 h-11 rounded-full flex items-center justify-center transition-all shrink-0">
+                <span id="dictation-icon" class="material-symbols-outlined text-lg">mic</span>
+            </button>
             <input id="user-typing-response" type="text" placeholder="Formulate and type your response..." onkeydown="handleInputKeydown(event)" class="bg-transparent border-none outline-none flex-grow text-white placeholder-white/30 focus:ring-0 text-body-md py-2" />
             <button onclick="submitResponse()" id="response-submit-btn" class="bg-primary hover:bg-white text-on-primary-fixed w-11 h-11 rounded-full flex items-center justify-center transition-all shadow-[0_0_15px_rgba(255,207,230,0.4)] active:scale-90 hover:scale-105 shrink-0">
                 <span class="material-symbols-outlined font-bold text-lg">arrow_upward</span>
@@ -891,6 +894,8 @@
 
         // Process response submission
         function submitResponse() {
+            if (isRecording) stopDictation();
+
             const input = document.getElementById("user-typing-response");
             const responseText = input.value.trim();
             if (!responseText) return;
@@ -1160,6 +1165,88 @@
 
             if (timerInterval) clearInterval(timerInterval);
             if (activeVoiceInterval) clearInterval(activeVoiceInterval);
+            if (isRecording) stopDictation();
+        }
+
+        // Web Speech API / Voice Dictation Logic
+        let recognition = null;
+        let isRecording = false;
+
+        function initSpeechRecognition() {
+            window.SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+            if (!window.SpeechRecognition) {
+                alert("Speech Recognition API is not supported in this browser. Please use Chrome or Edge for voice dictation.");
+                document.getElementById('dictation-btn').style.display = 'none';
+                return;
+            }
+            recognition = new window.SpeechRecognition();
+            recognition.continuous = true;
+            recognition.interimResults = true;
+
+            recognition.onstart = function() {
+                isRecording = true;
+                const btn = document.getElementById("dictation-btn");
+                const icon = document.getElementById("dictation-icon");
+                const input = document.getElementById("user-typing-response");
+                
+                btn.classList.remove("bg-white/5", "text-on-surface-variant");
+                btn.classList.add("bg-error/20", "text-error", "animate-pulse");
+                icon.innerText = "graphic_eq";
+                input.placeholder = "Listening... Speak your answer now.";
+            };
+
+            recognition.onresult = function(event) {
+                let interimTranscript = '';
+                let finalTranscript = '';
+                for (let i = event.resultIndex; i < event.results.length; ++i) {
+                    if (event.results[i].isFinal) {
+                        finalTranscript += event.results[i][0].transcript;
+                    } else {
+                        interimTranscript += event.results[i][0].transcript;
+                    }
+                }
+                const input = document.getElementById("user-typing-response");
+                if (finalTranscript || interimTranscript) {
+                    input.value = finalTranscript + interimTranscript;
+                }
+            };
+
+            recognition.onerror = function(event) {
+                console.error("Speech recognition error", event.error);
+                stopDictation();
+            };
+
+            recognition.onend = function() {
+                stopDictation();
+            };
+        }
+
+        function toggleDictation() {
+            if (!recognition) initSpeechRecognition();
+            if (!recognition) return;
+
+            if (isRecording) {
+                recognition.stop();
+            } else {
+                document.getElementById("user-typing-response").value = "";
+                recognition.start();
+            }
+        }
+
+        function stopDictation() {
+            if (!isRecording) return;
+            isRecording = false;
+            const btn = document.getElementById("dictation-btn");
+            const icon = document.getElementById("dictation-icon");
+            const input = document.getElementById("user-typing-response");
+            
+            btn.classList.add("bg-white/5", "text-on-surface-variant");
+            btn.classList.remove("bg-error/20", "text-error", "animate-pulse");
+            icon.innerText = "mic";
+            input.placeholder = "Formulate and type your response...";
+            if (recognition) {
+                recognition.stop();
+            }
         }
     </script>
 </body>
