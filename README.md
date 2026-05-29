@@ -38,7 +38,7 @@ Because the application uses modern web features (like `localStorage` and `postM
     ```
 
 3.  **Open the app:**
-    Navigate to `http://localhost:8000` in your web browser.
+   https://thanu09-t.github.io/Lumina-AI-Interview-Prep-Copilot/
 
 ## Technologies Used
 
