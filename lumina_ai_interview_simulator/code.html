@@ -700,6 +700,45 @@
             window.parent.postMessage({ action: "navigate", page: page }, "*");
         }
 
+        // Voice Synthesis function for AI Mentors
+        function speakMentorResponse(text) {
+            if (isAudioMuted || !window.speechSynthesis) return;
+            
+            // Cancel any ongoing speech
+            window.speechSynthesis.cancel();
+            
+            const utterance = new SpeechSynthesisUtterance(text);
+            
+            // Try to set appropriate voice based on sessionMentor
+            const voices = window.speechSynthesis.getVoices();
+            let selectedVoice = null;
+            
+            if (sessionMentor === 'aria') {
+                // Female voice preference
+                selectedVoice = voices.find(v => v.name.includes('Siri') && v.name.includes('Female')) || 
+                                voices.find(v => v.name.includes('Zira') || v.name.includes('Samantha') || v.name.includes('Google US English')) ||
+                                voices.find(v => v.name.toLowerCase().includes('female'));
+            } else if (sessionMentor === 'kai') {
+                // Male voice preference
+                selectedVoice = voices.find(v => v.name.includes('Siri') && v.name.includes('Male')) ||
+                                voices.find(v => v.name.includes('David') || v.name.includes('Daniel') || v.name.includes('Google UK English Male')) ||
+                                voices.find(v => v.name.toLowerCase().includes('male'));
+            } else if (sessionMentor === 'elena') {
+                // Distinct Female voice preference
+                selectedVoice = voices.find(v => v.name.includes('Victoria') || v.name.includes('Karen') || v.name.includes('Google UK English Female')) ||
+                                voices.find(v => v.name.includes('Hazel') || v.name.toLowerCase().includes('female'));
+            }
+            
+            if (selectedVoice) {
+                utterance.voice = selectedVoice;
+            }
+            
+            utterance.rate = 0.95; // Slightly slower for better comprehension
+            utterance.pitch = sessionMentor === 'kai' ? 0.9 : 1.1; // Adjust pitch based on mentor
+            
+            window.speechSynthesis.speak(utterance);
+        }
+
         // Initialize voice bar animations
         function initVoiceWaveform() {
             const bars = document.querySelectorAll(".voice-bar");
@@ -817,6 +856,7 @@
             setTimeout(() => {
                 // Post to transcript
                 appendTranscriptMessage(mentor.name.toUpperCase(), currentQ.q, true);
+                speakMentorResponse(currentQ.q);
                 
                 // Return to listening state
                 setSimulationStatus(`Listening...`, false);
@@ -938,6 +978,7 @@
                 if (currentQuestionIndex < sessionLength) {
                     // Update transcript with feedback, then trigger next question
                     appendTranscriptMessage(mentor.name.toUpperCase(), feedbackText, true);
+                    speakMentorResponse(feedbackText);
                     
                     setTimeout(() => {
                         triggerAIQuestion(false);
@@ -948,7 +989,9 @@
                     }, 1200);
                 } else {
                     // Final response processed. End session.
-                    appendTranscriptMessage(mentor.name.toUpperCase(), feedbackText + " That brings our session to a close! Let's review your simulated analytics.", true);
+                    const finalMsg = feedbackText + " That brings our session to a close! Let's review your simulated analytics.";
+                    appendTranscriptMessage(mentor.name.toUpperCase(), finalMsg, true);
+                    speakMentorResponse(finalMsg);
                     
                     setTimeout(() => {
                         triggerEndSessionDashboard();
@@ -1018,6 +1061,7 @@
             if (isAudioMuted) {
                 icon.innerText = "mic_off";
                 btn.querySelector('div').className = "w-10 h-10 rounded-full flex items-center justify-center bg-error-container/20 border border-error-container/40 text-error";
+                if (window.speechSynthesis) window.speechSynthesis.cancel();
             } else {
                 icon.innerText = "mic";
                 btn.querySelector('div').className = "w-10 h-10 rounded-full flex items-center justify-center bg-white/5 border border-white/10 text-on-surface-variant group-hover:text-white";
@@ -1166,6 +1210,7 @@
             if (timerInterval) clearInterval(timerInterval);
             if (activeVoiceInterval) clearInterval(activeVoiceInterval);
             if (isRecording) stopDictation();
+            if (window.speechSynthesis) window.speechSynthesis.cancel();
         }
 
         // Web Speech API / Voice Dictation Logic
