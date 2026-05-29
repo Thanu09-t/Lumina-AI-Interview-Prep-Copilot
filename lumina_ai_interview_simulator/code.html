@@ -1,0 +1,1166 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Lumina AI - Interview Simulation</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@300;400;500;700&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "surface-variant": "#3a3336",
+                        "secondary": "#e2c62d",
+                        "surface-tint": "#ffaeda",
+                        "outline": "#9d8c93",
+                        "on-primary": "#541a3f",
+                        "outline-variant": "#514349",
+                        "surface-container-high": "#2f282b",
+                        "surface-container-highest": "#3a3336",
+                        "on-secondary-fixed": "#211b00",
+                        "luminous-gold": "#FBBF24",
+                        "inverse-on-surface": "#352f31",
+                        "inverse-primary": "#8a486f",
+                        "space-obsidian": "#000000",
+                        "on-tertiary": "#133801",
+                        "error-container": "#93000a",
+                        "tertiary-fixed-dim": "#a6d38b",
+                        "ethereal-purple": "#A855F7",
+                        "background": "#171214",
+                        "error": "#ffb4ab",
+                        "tertiary-container": "#a0cd85",
+                        "secondary-container": "#c1a800",
+                        "on-tertiary-container": "#31581d",
+                        "surface-dim": "#171214",
+                        "inverse-surface": "#ecdfe3",
+                        "on-tertiary-fixed": "#072100",
+                        "surface-bright": "#3f373a",
+                        "surface-container-lowest": "#120d0f",
+                        "on-error": "#690005",
+                        "on-secondary": "#393000",
+                        "on-primary-container": "#78395f",
+                        "glass-border": "rgba(255, 255, 255, 0.45)",
+                        "surface-container-low": "#201a1d",
+                        "on-tertiary-fixed-variant": "#2a5016",
+                        "floral-pink": "#F472B6",
+                        "on-background": "#ecdfe3",
+                        "primary": "#ffcfe6",
+                        "on-secondary-container": "#483d00",
+                        "space-charcoal": "#121212",
+                        "primary-container": "#f9a8d4",
+                        "on-surface-variant": "#d5c1c9",
+                        "surface-container": "#241e21",
+                        "primary-fixed": "#ffd8ea",
+                        "primary-fixed-dim": "#ffaeda",
+                        "on-surface": "#ecdfe3",
+                        "secondary-fixed-dim": "#e2c62d",
+                        "tertiary-fixed": "#c1f0a4",
+                        "on-error-container": "#ffdad6",
+                        "on-secondary-fixed-variant": "#524600",
+                        "tertiary": "#bbe99f",
+                        "on-primary-fixed-variant": "#6f3157",
+                        "secondary-fixed": "#ffe24c",
+                        "surface": "#171214",
+                        "on-primary-fixed": "#3a0329"
+                    },
+                    borderRadius: {
+                        DEFAULT: "1rem",
+                        lg: "2rem",
+                        xl: "3rem",
+                        full: "9999px"
+                    },
+                    spacing: {
+                        gutter: "1.5rem",
+                        "container-max": "1280px",
+                        "margin-mobile": "1.5rem",
+                        "section-gap": "8rem",
+                        "margin-desktop": "5rem"
+                    },
+                    fontFamily: {
+                        "display-lg-mobile": ["Instrument Serif"],
+                        "label-sm": ["Barlow"],
+                        "label-md": ["Barlow"],
+                        "body-md": ["Barlow"],
+                        "headline-lg": ["Instrument Serif"],
+                        "body-lg": ["Barlow"],
+                        "headline-md": ["Instrument Serif"],
+                        "display-lg": ["Instrument Serif"]
+                    },
+                    fontSize: {
+                        "display-lg-mobile": ["56px", { lineHeight: "0.9", letterSpacing: "-2px", fontWeight: "400" }],
+                        "label-sm": ["11px", { lineHeight: "1.0", letterSpacing: "0px", fontWeight: "400" }],
+                        "label-md": ["14px", { lineHeight: "1.0", letterSpacing: "0.05em", fontWeight: "500" }],
+                        "body-md": ["16px", { lineHeight: "1.5", letterSpacing: "0px", fontWeight: "400" }],
+                        "headline-lg": ["64px", { lineHeight: "0.9", letterSpacing: "-3px", fontWeight: "400" }],
+                        "body-lg": ["18px", { lineHeight: "1.4", letterSpacing: "0px", fontWeight: "300" }],
+                        "headline-md": ["40px", { lineHeight: "1.0", letterSpacing: "-1px", fontWeight: "400" }],
+                        "display-lg": ["88px", { lineHeight: "0.8", letterSpacing: "-4px", fontWeight: "400" }]
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #000000;
+            color: #ecdfe3;
+            overflow: hidden;
+        }
+
+        .liquid-glass {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(20px);
+            border: 1.4px solid rgba(255, 255, 255, 0.1);
+            box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.15);
+        }
+
+        .liquid-glass-strong {
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(50px);
+            border: 1.4px solid rgba(255, 255, 255, 0.2);
+            box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.2);
+        }
+
+        .pulse-glow {
+            animation: pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.4; transform: scale(1); filter: blur(40px); }
+            50% { opacity: 0.8; transform: scale(1.1); filter: blur(60px); }
+        }
+
+        .voice-bar {
+            transition: height 0.1s ease-out;
+        }
+
+        .background-glow {
+            position: fixed;
+            width: 100vw;
+            height: 100vh;
+            background: radial-gradient(circle at 50% 50%, rgba(244, 114, 182, 0.15) 0%, transparent 70%);
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        .background-video-placeholder {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            object-fit: cover;
+            filter: brightness(0.3) saturate(0.8);
+            transition: transform 0.5s ease-out;
+        }
+
+        .meter-fill {
+            transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: rgba(255, 207, 230, 0.2);
+            border-radius: 10px;
+        }
+
+        .typing-indicator span {
+            display: inline-block;
+            width: 6px;
+            height: 6px;
+            background-color: #F472B6;
+            border-radius: 50%;
+            animation: typing 1.4s infinite both;
+        }
+
+        .typing-indicator span:nth-child(2) { animation-delay: .2s; }
+        .typing-indicator span:nth-child(3) { animation-delay: .4s; }
+
+        @keyframes typing {
+            0%, 80%, 100% { transform: scale(0.6); opacity: 0.4; }
+            40% { transform: scale(1.2); opacity: 1; }
+        }
+    </style>
+</head>
+<body class="font-body-md text-body-md selection:bg-floral-pink/30 relative">
+    <!-- Background Environment -->
+    <img class="background-video-placeholder" data-alt="A sun-drenched enchanted forest scene at dusk with ethereal light beams filtering through heavy tree canopies. Soft pink flowers carpet the ground, creating a magical, cinematic space-travel aesthetic. The mood is serene and professional, featuring a deep obsidian color palette with soft golden and purple glowing highlights." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBv8tw607ohfC36RRj70wsN1pUXLdIfCIFCy8MMkd-8DfwCfHJUDFdgkAIJKMSppJoqSwv11KpH7gvuZk7lhaajyfVVIkXCp0EgHSTD7Pvj8wRUAPLsNAm2bTlo-waOxKc7brnlmPjJcu_RfGCwHSDf2D1sgnpOj3YA8bNGddcowZslwlb8qViCw_PFl16Sxkcln704JTurSuCdIqCjubfD-XRX2dgUnIVBslYjvu9l7U-_xz2JFvTc8gSOpZNUhYCmYiVVvgCjr9A"/>
+    <div class="background-glow"></div>
+
+    <!-- Top Navigation -->
+    <nav class="fixed top-6 left-1/2 -translate-x-1/2 w-[90%] max-w-7xl rounded-full border border-glass-border px-8 py-3 bg-surface-container/30 backdrop-blur-[50px] backdrop-filter border-white/10 shadow-[inset_0_1px_1px_rgba(255,255,255,0.15)] shadow-2xl shadow-space-obsidian/50 flex justify-between items-center z-40">
+        <div class="font-display-lg text-headline-md text-primary drop-shadow-[0_0_15px_rgba(255,207,230,0.5)] cursor-pointer" onclick="navigateParent('home')">Lumina AI</div>
+        <div class="hidden md:flex gap-8 items-center">
+            <a class="text-floral-pink font-bold border-b-2 border-floral-pink pb-1 font-label-md" href="#" onclick="navigateParent('simulator')">Simulate</a>
+            <a class="text-on-surface-variant hover:text-primary transition-colors duration-300 font-label-md" href="#" onclick="navigateParent('resume')">Resume</a>
+            <a class="text-on-surface-variant hover:text-primary transition-colors duration-300 font-label-md" href="#" onclick="navigateParent('growth')">Growth</a>
+            <a class="text-on-surface-variant hover:text-primary transition-colors duration-300 font-label-md" href="#" onclick="navigateParent('home')">Home</a>
+        </div>
+        <div class="flex items-center gap-4">
+            <span class="material-symbols-outlined text-on-surface-variant cursor-pointer hover:text-primary transition-colors" onclick="navigateParent('growth')">account_circle</span>
+            <div id="session-timer-display" class="hidden liquid-glass px-4 py-1.5 rounded-full font-label-md text-floral-pink flex items-center gap-2">
+                <span class="material-symbols-outlined text-sm animate-pulse">timer</span>
+                <span id="elapsed-time-counter">00:00</span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- UI Overlay: Role & Mentor Selector (Startup Screen) -->
+    <div id="selector-overlay" class="fixed inset-0 pt-28 pb-12 px-6 flex items-center justify-center z-30">
+        <div class="liquid-glass p-8 md:p-12 rounded-lg max-w-4xl w-full h-[90%] md:h-auto overflow-y-auto custom-scrollbar flex flex-col gap-6 relative">
+            <div class="absolute -top-12 -right-12 w-48 h-48 bg-primary/10 blur-[50px] rounded-full pointer-events-none"></div>
+            <div class="absolute -bottom-12 -left-12 w-48 h-48 bg-ethereal-purple/10 blur-[50px] rounded-full pointer-events-none"></div>
+
+            <div class="text-center mb-2">
+                <span class="text-floral-pink font-label-md text-label-md uppercase tracking-[0.2em] mb-2 block">Configure Environment</span>
+                <h2 class="font-display-lg text-headline-lg italic text-white">Select Your Simulation Path</h2>
+                <p class="text-on-surface-variant font-body-md max-w-xl mx-auto mt-2">Choose your target discipline, customize the session duration, and coordinate with a dedicated AI mentor.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Interview Discipline Selection -->
+                <div class="space-y-4">
+                    <h3 class="font-label-md text-label-md uppercase tracking-wider text-primary border-b border-white/10 pb-2">1. Choose Category</h3>
+                    <div class="space-y-3">
+                        <label class="discipline-card liquid-glass p-4 rounded-lg flex items-center gap-4 cursor-pointer hover:border-floral-pink/40 border-[1.4px] border-transparent transition-all block">
+                            <input type="radio" name="discipline" value="behavioral" checked class="hidden" />
+                            <span class="material-symbols-outlined text-2xl text-floral-pink">diversity_3</span>
+                            <div class="text-left">
+                                <p class="font-bold text-on-surface text-sm">Behavioral Sync</p>
+                                <p class="text-[11px] text-on-surface-variant">Situational & cultural alignment</p>
+                            </div>
+                        </label>
+                        <label class="discipline-card liquid-glass p-4 rounded-lg flex items-center gap-4 cursor-pointer hover:border-luminous-gold/40 border-[1.4px] border-transparent transition-all block">
+                            <input type="radio" name="discipline" value="technical" class="hidden" />
+                            <span class="material-symbols-outlined text-2xl text-luminous-gold">code</span>
+                            <div class="text-left">
+                                <p class="font-bold text-on-surface text-sm">Frontend & Technical</p>
+                                <p class="text-[11px] text-on-surface-variant">Coding, JS, & UI architectures</p>
+                            </div>
+                        </label>
+                        <label class="discipline-card liquid-glass p-4 rounded-lg flex items-center gap-4 cursor-pointer hover:border-ethereal-purple/40 border-[1.4px] border-transparent transition-all block">
+                            <input type="radio" name="discipline" value="system_design" class="hidden" />
+                            <span class="material-symbols-outlined text-2xl text-ethereal-purple">schema</span>
+                            <div class="text-left">
+                                <p class="font-bold text-on-surface text-sm">System Architecture</p>
+                                <p class="text-[11px] text-on-surface-variant">Distributed systems scale</p>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Mentor Avatar Selection -->
+                <div class="space-y-4">
+                    <h3 class="font-label-md text-label-md uppercase tracking-wider text-primary border-b border-white/10 pb-2">2. Match AI Mentor</h3>
+                    <div class="space-y-3">
+                        <label class="mentor-card liquid-glass p-4 rounded-lg flex items-center gap-4 cursor-pointer hover:border-primary/40 border-[1.4px] border-transparent transition-all block">
+                            <input type="radio" name="mentor" value="aria" checked class="hidden" />
+                            <div class="w-10 h-10 rounded-full bg-floral-pink/20 flex items-center justify-center text-floral-pink font-bold border border-floral-pink/40 text-sm">AR</div>
+                            <div class="text-left">
+                                <p class="font-bold text-on-surface text-sm">Aria</p>
+                                <p class="text-[11px] text-on-surface-variant">Senior HR Lead</p>
+                            </div>
+                        </label>
+                        <label class="mentor-card liquid-glass p-4 rounded-lg flex items-center gap-4 cursor-pointer hover:border-primary/40 border-[1.4px] border-transparent transition-all block">
+                            <input type="radio" name="mentor" value="kai" class="hidden" />
+                            <div class="w-10 h-10 rounded-full bg-luminous-gold/20 flex items-center justify-center text-luminous-gold font-bold border border-luminous-gold/40 text-sm">KA</div>
+                            <div class="text-left">
+                                <p class="font-bold text-on-surface text-sm">Kai</p>
+                                <p class="text-[11px] text-on-surface-variant">Tech Lead at Google</p>
+                            </div>
+                        </label>
+                        <label class="mentor-card liquid-glass p-4 rounded-lg flex items-center gap-4 cursor-pointer hover:border-primary/40 border-[1.4px] border-transparent transition-all block">
+                            <input type="radio" name="mentor" value="elena" class="hidden" />
+                            <div class="w-10 h-10 rounded-full bg-ethereal-purple/20 flex items-center justify-center text-ethereal-purple font-bold border border-ethereal-purple/40 text-sm">EL</div>
+                            <div class="text-left">
+                                <p class="font-bold text-on-surface text-sm">Elena</p>
+                                <p class="text-[11px] text-on-surface-variant">Principal Architect</p>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Session Configuration -->
+                <div class="space-y-4 flex flex-col justify-between">
+                    <div>
+                        <h3 class="font-label-md text-label-md uppercase tracking-wider text-primary border-b border-white/10 pb-2 mb-4">3. Session Setup</h3>
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block font-label-sm text-on-surface-variant uppercase tracking-wider mb-2">Interview Length</label>
+                                <select id="session-length" class="w-full bg-white/5 border border-white/10 rounded-lg py-2 px-3 focus:outline-none focus:border-primary text-sm">
+                                    <option value="3">Short Sprint (3 Questions)</option>
+                                    <option value="5" selected>Standard Trial (5 Questions)</option>
+                                    <option value="8">Deep Exploration (8 Questions)</option>
+                                </select>
+                            </div>
+                            <div class="liquid-glass p-3 rounded-lg border-white/5 text-[11px] text-on-surface-variant leading-relaxed">
+                                <span class="material-symbols-outlined text-sm align-middle text-floral-pink mr-1">info</span>
+                                All feedback generated in this mock simulator is saved to your profile for comprehensive tracking in the Growth tab.
+                            </div>
+                        </div>
+                    </div>
+
+                    <button onclick="startSession()" class="liquid-glass-strong w-full py-4 rounded-lg font-label-md text-label-md uppercase tracking-[0.2em] text-center hover:scale-105 active:scale-95 transition-all mt-6 shadow-[0_0_30px_rgba(255,207,230,0.3)]">
+                        Commence Session
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Live Simulation Workspace -->
+    <main id="simulation-workspace" class="hidden h-screen w-full flex items-center justify-center pt-24 pb-32 px-gutter">
+        <div class="w-full h-full max-w-7xl grid grid-cols-1 md:grid-cols-12 gap-8">
+            
+            <!-- LEFT COLUMN: Realtime Performance Delta -->
+            <div class="hidden md:flex md:col-span-3 flex-col gap-6">
+                <div class="liquid-glass p-6 rounded-lg h-full flex flex-col gap-6 justify-between">
+                    <div class="space-y-6">
+                        <div class="flex items-center gap-3 border-b border-white/10 pb-3">
+                            <div class="w-2.5 h-2.5 rounded-full bg-floral-pink animate-pulse"></div>
+                            <h3 class="font-label-md text-label-md text-on-surface uppercase tracking-widest">Resonance Engine</h3>
+                        </div>
+
+                        <!-- Progress Indicators -->
+                        <div class="space-y-6">
+                            <div>
+                                <div class="flex justify-between mb-2">
+                                    <span class="text-label-sm uppercase tracking-wider opacity-70">Confidence Resonance</span>
+                                    <span id="metric-val-confidence" class="text-label-sm text-floral-pink font-bold">60%</span>
+                                </div>
+                                <div class="h-1.5 w-full bg-white/5 rounded-full overflow-hidden">
+                                    <div id="metric-bar-confidence" class="meter-fill h-full bg-floral-pink shadow-[0_0_10px_rgba(244,114,182,0.5)] animate-pulse" style="width: 60%"></div>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="flex justify-between mb-2">
+                                    <span class="text-label-sm uppercase tracking-wider opacity-70">Technical Precision</span>
+                                    <span id="metric-val-articulation" class="text-label-sm text-luminous-gold font-bold">60%</span>
+                                </div>
+                                <div class="h-1.5 w-full bg-white/5 rounded-full overflow-hidden">
+                                    <div id="metric-bar-articulation" class="meter-fill h-full bg-luminous-gold shadow-[0_0_10px_rgba(251,191,36,0.5)]" style="width: 60%"></div>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="flex justify-between mb-2">
+                                    <span class="text-label-sm uppercase tracking-wider opacity-70">Vocal Pacing</span>
+                                    <span id="metric-val-calmness" class="text-label-sm text-ethereal-purple font-bold">60%</span>
+                                </div>
+                                <div class="h-1.5 w-full bg-white/5 rounded-full overflow-hidden">
+                                    <div id="metric-bar-calmness" class="meter-fill h-full bg-ethereal-purple shadow-[0_0_10px_rgba(168,85,247,0.5)]" style="width: 60%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- AI Insights Live Panel -->
+                    <div class="bg-floral-pink/5 border border-floral-pink/20 p-4 rounded-[1.25rem] transition-all duration-500">
+                        <div class="flex items-center gap-2 mb-2">
+                            <span class="material-symbols-outlined text-floral-pink text-sm animate-spin" style="animation-duration: 4s;">auto_awesome</span>
+                            <span class="text-label-sm font-bold text-floral-pink uppercase tracking-wider">AI Copilot Coach</span>
+                        </div>
+                        <p id="ai-live-insight" class="text-label-sm leading-relaxed opacity-80 italic">"Configure your selector parameters above. Once loaded, I will offer customized feedback prompts here."</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CENTRAL COLUMN: Cognitive Waves / Avatar -->
+            <div class="col-span-1 md:col-span-6 flex flex-col gap-6 items-center justify-center relative">
+                <!-- Question Progress Badge -->
+                <div class="absolute top-4 border border-white/10 bg-white/5 rounded-full px-5 py-1.5 backdrop-blur-md flex items-center gap-2 text-xs font-label-md uppercase tracking-wider">
+                    <span id="question-progress-count" class="text-primary font-bold">Question 1 of 5</span>
+                </div>
+
+                <!-- Waveform Ring -->
+                <div class="relative w-64 h-64 md:w-80 md:h-80 flex items-center justify-center mt-8">
+                    <div class="absolute inset-0 bg-floral-pink/20 rounded-full blur-[80px] pulse-glow"></div>
+                    <div class="absolute inset-0 bg-ethereal-purple/10 rounded-full blur-[40px] animate-[pulse_6s_infinite]"></div>
+                    <div class="w-full h-full rounded-full liquid-glass-strong p-1 flex items-center justify-center relative z-10 overflow-hidden">
+                        <!-- Abstract "Listening" Waveform -->
+                        <div id="waveform-container" class="flex items-end gap-1.5 h-32">
+                            <div class="voice-bar w-1.5 bg-primary/80 rounded-full h-12"></div>
+                            <div class="voice-bar w-1.5 bg-primary/60 rounded-full h-20"></div>
+                            <div class="voice-bar w-1.5 bg-primary/90 rounded-full h-28"></div>
+                            <div class="voice-bar w-1.5 bg-primary rounded-full h-16"></div>
+                            <div class="voice-bar w-1.5 bg-primary/70 rounded-full h-24"></div>
+                            <div class="voice-bar w-1.5 bg-primary/50 rounded-full h-10"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="text-center z-10">
+                    <h2 id="mentor-title-name" class="font-display-lg text-headline-md tracking-tighter text-white mb-2 italic">Aria</h2>
+                    <p id="mentor-status-text" class="text-label-md text-on-surface-variant tracking-[0.25em] uppercase animate-pulse">Lumina AI Mentor Active</p>
+                </div>
+            </div>
+
+            <!-- RIGHT COLUMN: Active Simulation Transcript -->
+            <div class="hidden md:flex md:col-span-3 flex-col gap-6">
+                <div class="liquid-glass p-6 rounded-lg h-full flex flex-col justify-between">
+                    <div class="flex items-center justify-between mb-4 border-b border-white/10 pb-3">
+                        <div class="flex items-center gap-3">
+                            <span class="material-symbols-outlined text-on-surface-variant text-base">receipt_long</span>
+                            <h3 class="font-label-md text-label-md text-on-surface uppercase tracking-widest">Active Transcript</h3>
+                        </div>
+                        <div class="bg-white/10 px-2.5 py-0.5 rounded text-[9px] uppercase tracking-wider text-floral-pink font-bold">Realtime</div>
+                    </div>
+                    
+                    <div id="transcript-feed-area" class="flex-grow overflow-y-auto space-y-4 pr-2 custom-scrollbar text-sm max-h-[360px] md:max-h-none">
+                        <!-- Messages are populated dynamically -->
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Bottom Controls & Input Area -->
+    <div id="simulation-controls-bar" class="hidden fixed bottom-12 left-1/2 -translate-x-1/2 w-[92%] max-w-4xl flex flex-col items-center gap-4 z-50">
+        <!-- Text Response Input Box -->
+        <div class="w-full liquid-glass-strong rounded-full px-6 py-2.5 flex items-center gap-4 shadow-[0_20px_50px_rgba(0,0,0,0.6)] backdrop-blur-2xl border border-white/20">
+            <input id="user-typing-response" type="text" placeholder="Formulate and type your response..." onkeydown="handleInputKeydown(event)" class="bg-transparent border-none outline-none flex-grow text-white placeholder-white/30 focus:ring-0 text-body-md py-2" />
+            <button onclick="submitResponse()" id="response-submit-btn" class="bg-primary hover:bg-white text-on-primary-fixed w-11 h-11 rounded-full flex items-center justify-center transition-all shadow-[0_0_15px_rgba(255,207,230,0.4)] active:scale-90 hover:scale-105 shrink-0">
+                <span class="material-symbols-outlined font-bold text-lg">arrow_upward</span>
+            </button>
+        </div>
+
+        <!-- System Actions Control -->
+        <div class="liquid-glass rounded-full px-6 py-3 flex items-center gap-4 shadow-xl">
+            <button onclick="toggleAudioMute()" id="audio-mute-toggle" class="flex flex-col items-center gap-1 group">
+                <div class="w-10 h-10 rounded-full flex items-center justify-center bg-white/5 border border-white/10 group-hover:bg-white/10 transition-all text-on-surface-variant group-hover:text-white">
+                    <span id="audio-mute-icon" class="material-symbols-outlined text-lg">mic</span>
+                </div>
+            </button>
+            <div class="h-6 w-[1px] bg-white/10 mx-2"></div>
+            <button onclick="triggerContextHint()" class="bg-white/5 hover:bg-white/10 text-on-surface border border-white/15 px-6 py-2.5 rounded-full flex items-center gap-2 hover:scale-105 transition-all shadow-md active:scale-95">
+                <span class="material-symbols-outlined text-lg text-primary fill" style="font-variation-settings: 'FILL' 1;">help</span>
+                <span class="font-label-md text-xs uppercase tracking-widest font-bold">Ask for Hint</span>
+            </button>
+            <div class="h-6 w-[1px] bg-white/10 mx-2"></div>
+            <button onclick="endSessionPrompt()" class="flex flex-col items-center gap-1 group">
+                <div class="w-10 h-10 rounded-full flex items-center justify-center bg-error-container/20 border border-error-container/40 group-hover:bg-error-container/40 transition-all text-error group-hover:text-white">
+                    <span class="material-symbols-outlined text-lg">call_end</span>
+                </div>
+            </button>
+        </div>
+    </div>
+
+    <!-- SYSTEM GLASS MODAL: Question Hint Overlay -->
+    <div id="hint-modal-overlay" class="fixed inset-0 bg-black/60 backdrop-blur-md hidden items-center justify-center z-50">
+        <div class="liquid-glass p-8 rounded-lg max-w-lg w-full mx-6 relative">
+            <div class="flex justify-between items-center border-b border-white/10 pb-4 mb-6">
+                <div class="flex items-center gap-2">
+                    <span class="material-symbols-outlined text-floral-pink">auto_awesome</span>
+                    <h3 class="font-headline-md text-[24px] text-white italic">Lumina Coaching Assistant</h3>
+                </div>
+                <button onclick="closeHintModal()" class="w-8 h-8 rounded-full bg-white/5 border border-white/10 flex items-center justify-center hover:bg-white/15 transition-all">
+                    <span class="material-symbols-outlined text-sm">close</span>
+                </button>
+            </div>
+            <div class="space-y-4">
+                <p class="text-xs font-label-md uppercase tracking-wider text-primary">Contextual Recommendation</p>
+                <div id="hint-content-paragraph" class="bg-white/5 border border-white/10 p-5 rounded-lg text-sm leading-relaxed text-on-surface-variant italic">
+                    "Take a deep breath and outline your answer sequentially. Start by addressing the problem framework, then outline technical tools applied."
+                </div>
+            </div>
+            <button onclick="closeHintModal()" class="liquid-glass-strong w-full py-3.5 rounded-full font-label-md text-xs uppercase tracking-widest mt-8 text-center hover:scale-[1.02] active:scale-95 transition-all">
+                Acknowledge Hint
+            </button>
+        </div>
+    </div>
+
+    <!-- SYSTEM GLASS MODAL: Premium Session Summary & Analytics Dashboard -->
+    <div id="summary-modal-overlay" class="fixed inset-0 bg-black/80 backdrop-blur-lg hidden items-center justify-center z-50 overflow-y-auto pt-16 pb-12 px-6">
+        <div class="liquid-glass p-8 md:p-12 rounded-lg max-w-4xl w-full flex flex-col gap-8 relative my-auto">
+            <div class="absolute -top-12 -right-12 w-64 h-64 bg-floral-pink/10 blur-[100px] rounded-full pointer-events-none"></div>
+
+            <div class="flex justify-between items-start border-b border-white/10 pb-6">
+                <div>
+                    <span class="text-floral-pink font-label-md text-label-md uppercase tracking-[0.2em] mb-2 block">Performance Portfolio</span>
+                    <h2 class="font-display-lg text-headline-lg italic text-white leading-none">Simulation Diagnostics</h2>
+                </div>
+                <div class="text-right">
+                    <span class="block text-xs font-label-md uppercase tracking-wider text-on-surface-variant">Active Mentor</span>
+                    <span id="summary-mentor-name" class="font-headline-md text-xl text-primary leading-tight italic">Aria</span>
+                </div>
+            </div>
+
+            <!-- Score Summary Dashboard -->
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-6 items-center">
+                <!-- Overall Big Score Circle -->
+                <div class="liquid-glass p-6 rounded-lg flex flex-col items-center justify-center text-center col-span-1 md:col-span-1 border border-primary/20 bg-primary/5 h-full">
+                    <span class="text-label-sm uppercase tracking-wider text-on-surface-variant mb-2">Overall Score</span>
+                    <div id="summary-overall-score" class="text-headline-lg font-headline-lg text-floral-pink leading-none animate-pulse">84%</div>
+                    <span class="text-[10px] uppercase font-label-sm tracking-widest text-primary mt-2">Strong Resonance</span>
+                </div>
+
+                <!-- Individual Metrics Details -->
+                <div class="col-span-1 md:col-span-3 space-y-4 bg-white/5 p-6 rounded-lg border border-white/5">
+                    <div>
+                        <div class="flex justify-between mb-1 text-xs">
+                            <span class="uppercase tracking-wider text-on-surface-variant">Confidence Presence</span>
+                            <span id="summary-score-confidence" class="font-bold text-floral-pink">84%</span>
+                        </div>
+                        <div class="h-2 w-full bg-white/5 rounded-full overflow-hidden">
+                            <div id="summary-bar-confidence" class="h-full bg-floral-pink" style="width: 84%"></div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="flex justify-between mb-1 text-xs">
+                            <span class="uppercase tracking-wider text-on-surface-variant">Technical Accuracy</span>
+                            <span id="summary-score-articulation" class="font-bold text-luminous-gold">72%</span>
+                        </div>
+                        <div class="h-2 w-full bg-white/5 rounded-full overflow-hidden">
+                            <div id="summary-bar-articulation" class="h-full bg-luminous-gold" style="width: 72%"></div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="flex justify-between mb-1 text-xs">
+                            <span class="uppercase tracking-wider text-on-surface-variant">Cognitive Pacing</span>
+                            <span id="summary-score-calmness" class="font-bold text-ethereal-purple">91%</span>
+                        </div>
+                        <div class="h-2 w-full bg-white/5 rounded-full overflow-hidden">
+                            <div id="summary-bar-calmness" class="h-full bg-ethereal-purple" style="width: 91%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Highlights and Improvement Card -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="bg-floral-pink/5 border border-floral-pink/20 p-5 rounded-lg">
+                    <div class="flex items-center gap-2 mb-3 text-floral-pink">
+                        <span class="material-symbols-outlined text-sm">stars</span>
+                        <h4 class="font-label-md text-xs uppercase tracking-wider font-bold">Identified Core Strengths</h4>
+                    </div>
+                    <ul id="summary-strengths-list" class="space-y-2 text-xs text-on-surface-variant list-disc pl-4 leading-relaxed">
+                        <li>Excellent structural clarity in situational question frameworks.</li>
+                        <li>Proactive representation of project outcomes and lessons learned.</li>
+                        <li>Consistent articulation speed with high vocal tone resonance.</li>
+                    </ul>
+                </div>
+                <div class="bg-luminous-gold/5 border border-luminous-gold/20 p-5 rounded-lg">
+                    <div class="flex items-center gap-2 mb-3 text-luminous-gold">
+                        <span class="material-symbols-outlined text-sm">trending_up</span>
+                        <h4 class="font-label-md text-xs uppercase tracking-wider font-bold">Growth Opportunities</h4>
+                    </div>
+                    <ul id="summary-growth-list" class="space-y-2 text-xs text-on-surface-variant list-disc pl-4 leading-relaxed">
+                        <li>Ensure technical concepts feature quantitative system bottlenecks.</li>
+                        <li>Integrate specific framework nomenclatures (e.g. Virtual DOM, ACID).</li>
+                        <li>Maintain structured outline formats in System Architecture responses.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Session Details Accordion Section -->
+            <div class="space-y-3">
+                <h4 class="font-headline-md text-lg text-white leading-tight italic border-b border-white/10 pb-2 mb-4">Detailed Question Sync</h4>
+                <div id="summary-accordion-container" class="space-y-3 max-h-[220px] overflow-y-auto custom-scrollbar pr-2">
+                    <!-- Q&A logs injected dynamically -->
+                </div>
+            </div>
+
+            <!-- Actions Bar -->
+            <div class="flex flex-col sm:flex-row gap-4 border-t border-white/10 pt-6 mt-2">
+                <button onclick="restartSessionSelector()" class="bg-white/5 hover:bg-white/10 border border-white/10 px-8 py-4 rounded-full font-label-md text-xs uppercase tracking-widest text-on-surface flex-grow text-center active:scale-95 hover:scale-[1.02] transition-all">
+                    Restart Simulation
+                </button>
+                <button onclick="saveAndGoToGrowth()" class="liquid-glass-strong px-8 py-4 rounded-full font-label-md text-xs uppercase tracking-widest text-center flex-grow shadow-lg active:scale-95 hover:scale-[1.02] transition-all">
+                    Save Session & Sync Growth
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- CORE INTERACTIVITY SCRIPTS -->
+    <script>
+        // Question Database Bank
+        const QUESTION_BANK = {
+            behavioral: [
+                {
+                    q: "How do you handle conflict within a high-performing technical team?",
+                    hint: "Focus on active listening, objective mediation, separating personal feelings from technical arguments, and aligning on common product goals."
+                },
+                {
+                    q: "Describe a project that failed. What went wrong, and what did you learn from it?",
+                    hint: "Be honest about the failure but focus on the root causes (e.g., scope creep, misaligned assumptions) and the specific processes you implemented to prevent it in future projects."
+                },
+                {
+                    q: "Tell me about a time you had to deal with a difficult stakeholder. How did you resolve the situation?",
+                    hint: "Emphasize empathy. Talk about how you sought to understand their underlying concerns, established transparent communication channels, and built trust through incremental wins."
+                },
+                {
+                    q: "How do you prioritize your work when everything feels high priority?",
+                    hint: "Mention framework-based prioritization (like Eisenhower Matrix or impact/effort mapping), aligning with business objectives, managing expectations, and communicating proactively."
+                },
+                {
+                    q: "Tell me about a time you disagreed with your manager. How did you handle it?",
+                    hint: "Discuss how you gathered data/evidence, presented your viewpoint in a private and constructive manner, listened to their perspective, and ultimately committed to the agreed-upon direction."
+                }
+            ],
+            technical: [
+                {
+                    q: "Explain the differences between REST and GraphQL. When would you choose one over the other?",
+                    hint: "REST is simple, standard, and has excellent caching, but can suffer from over/under-fetching. GraphQL offers flexible single-endpoint queries and typed schemas, ideal for complex, fast-evolving frontend applications."
+                },
+                {
+                    q: "How does the virtual DOM in React work, and what are its performance benefits?",
+                    hint: "Explain that React maintains a lightweight JS representation of the UI. On state change, it creates a new virtual DOM, diffs it with the previous one (reconciliation), and batched-updates only the changed nodes in the real DOM."
+                },
+                {
+                    q: "What is the event loop in JavaScript? Explain the call stack, task queue, and microtask queue.",
+                    hint: "JavaScript is single-threaded. Synchronous code runs on the call stack. The event loop checks the stack, empties the microtask queue (promises) first, and then executes callbacks from the macrotask queue (setTimeout)."
+                },
+                {
+                    q: "Explain how HTTPS works. What happens during the SSL/TLS handshake?",
+                    hint: "Describe asymmetric cryptography (public/private keys) for establishing a secure connection and sharing a symmetric key, which is then used for fast encryption of all subsequent communication."
+                },
+                {
+                    q: "Describe the difference between SQL and NoSQL databases. When would you use a Document store vs a Relational database?",
+                    hint: "SQL databases are relational, structured, and ACID-compliant, great for transactions. NoSQL databases (document/key-value) are schema-less, highly scalable, and excellent for unstructured, high-throughput data."
+                }
+            ],
+            system_design: [
+                {
+                    q: "Design a URL shortening service like Bitly. What are the key API endpoints and database schema?",
+                    hint: "Outline: REST endpoints (POST /shorten, GET /{shortUrl}). Database: simple key-value or relational mapping. Key detail: base62 encoding of an auto-incrementing ID or MD5 hashing with collision handling."
+                },
+                {
+                    q: "How would you design a scalable notification system that supports email, SMS, and push notifications?",
+                    hint: "Use a microservices architecture. Key components: API gateway, prioritization queues (Kafka/RabbitMQ) to handle rate-limiting and retries, third-party adapters, and user preference database."
+                },
+                {
+                    q: "Design a rate limiter for an API. What algorithm would you use (e.g., Token Bucket, Leaking Bucket, Sliding Window)?",
+                    hint: "Compare algorithms. Token bucket is simple and handles bursts well. Sliding window log or counter is precise. Recommend using Redis for distributed rate-limiting to store user request timestamps/counters."
+                },
+                {
+                    q: "How would you design a global content delivery system like Netflix or YouTube? What caching strategies would you apply?",
+                    hint: "Focus on Edge servers (CDNs) located close to users, video transcoding pipelines for multiple bitrates, adaptive bitrate streaming, geo-routing DNS, and pre-caching popular videos at the edge."
+                },
+                {
+                    q: "Design a real-time chat application like WhatsApp or Slack. How do you handle connection state and message delivery?",
+                    hint: "Use WebSockets for persistent bi-directional communication. Use a connection manager to track active socket connections in Redis, a message broker (like Kafka) for delivery, and a NoSQL database (Cassandra) for message history."
+                }
+            ]
+        };
+
+        const MENTOR_DATA = {
+            aria: { name: "Aria", title: "Senior HR Expert", styleClass: "text-floral-pink" },
+            kai: { name: "Kai", title: "Tech Lead", styleClass: "text-luminous-gold" },
+            elena: { name: "Elena", title: "Principal Architect", styleClass: "text-ethereal-purple" }
+        };
+
+        const AI_INSIGHTS_ROTATOR = {
+            behavioral: [
+                "Vocal coaching: Keep your breathing even and use structural milestones (STAR method).",
+                "Try to weave metrics directly into team management disputes to quantify success.",
+                "Structure: Introduce the context early and focus on what *you* did vs. general team actions."
+            ],
+            technical: [
+                "Technic: Slower pacing when explaining React reconciliation details allows deep synthesis.",
+                "Make sure to highlight potential memory leak sources when describing lexical closures.",
+                "Try to quantify space complexity bottlenecks alongside the time complexity algorithms."
+            ],
+            system_design: [
+                "Structural Architecture: Mention read/write ratios to define caching requirements.",
+                "Don't overlook single point of failure bottlenecks. Map database replicas early.",
+                "Ensure WebSocket connection manager states feature distributed session caches (like Redis)."
+            ]
+        };
+
+        // App States
+        let sessionDiscipline = "behavioral";
+        let sessionMentor = "aria";
+        let sessionLength = 5;
+        let sessionQuestions = [];
+        let currentQuestionIndex = 0;
+        let sessionStartTime = null;
+        let timerInterval = null;
+        let responseHistory = [];
+        let performanceMetrics = { confidence: 60, articulation: 60, calmness: 60 };
+        let isAudioMuted = false;
+        let activeVoiceInterval = null;
+
+        // Post Message Bridge to Shell
+        function navigateParent(page) {
+            window.parent.postMessage({ action: "navigate", page: page }, "*");
+        }
+
+        // Initialize voice bar animations
+        function initVoiceWaveform() {
+            const bars = document.querySelectorAll(".voice-bar");
+            if (activeVoiceInterval) clearInterval(activeVoiceInterval);
+            
+            activeVoiceInterval = setInterval(() => {
+                bars.forEach(bar => {
+                    let height = 10;
+                    if (!isAudioMuted) {
+                        // Dynamic waveform ranges based on state
+                        const status = document.getElementById("mentor-status-text").innerText.toLowerCase();
+                        if (status.includes("listening")) {
+                            height = Math.floor(Math.random() * 25) + 15; // Slow breathing wave
+                        } else if (status.includes("thinking") || status.includes("analyzing")) {
+                            height = Math.floor(Math.random() * 15) + 5;  // Low pulse
+                        } else {
+                            height = Math.floor(Math.random() * 70) + 30; // Highly active speech wave
+                        }
+                    }
+                    bar.style.height = `${height}%`;
+                });
+            }, 100);
+        }
+
+        // Parallax background event
+        document.addEventListener("mousemove", (e) => {
+            const x = (window.innerWidth / 2 - e.pageX) / 60;
+            const y = (window.innerHeight / 2 - e.pageY) / 60;
+            const bg = document.querySelector(".background-video-placeholder");
+            if (bg) bg.style.transform = `scale(1.05) translate(${x}px, ${y}px)`;
+        });
+
+        // Initialize session parameters
+        function startSession() {
+            // Read UI configs
+            sessionDiscipline = document.querySelector('input[name="discipline"]:checked').value;
+            sessionMentor = document.querySelector('input[name="mentor"]:checked').value;
+            sessionLength = parseInt(document.getElementById("session-length").value);
+
+            // Populate Questions Bank
+            const sourceQuestions = QUESTION_BANK[sessionDiscipline] || QUESTION_BANK.behavioral;
+            
+            // Generate customized and shuffled list of questions based on length
+            sessionQuestions = [];
+            let pool = [...sourceQuestions];
+            while (sessionQuestions.length < sessionLength) {
+                if (pool.length === 0) pool = [...sourceQuestions];
+                const randIndex = Math.floor(Math.random() * pool.length);
+                sessionQuestions.push(pool.splice(randIndex, 1)[0]);
+            }
+
+            // Update UI State Display
+            const mentor = MENTOR_DATA[sessionMentor];
+            document.getElementById("mentor-title-name").innerText = `${mentor.name} - ${mentor.title}`;
+            document.getElementById("mentor-title-name").className = `font-display-lg text-headline-md tracking-tighter mb-2 italic ${mentor.styleClass}`;
+            
+            // Set initial Metrics values
+            performanceMetrics = { confidence: 62, articulation: 58, calmness: 65 };
+            updateMetricsDisplay();
+
+            // Toggle Panels
+            document.getElementById("selector-overlay").classList.add("hidden");
+            document.getElementById("simulation-workspace").classList.remove("hidden");
+            document.getElementById("simulation-controls-bar").classList.remove("hidden");
+            document.getElementById("session-timer-display").classList.remove("hidden");
+
+            // Reset States
+            currentQuestionIndex = 0;
+            responseHistory = [];
+            document.getElementById("transcript-feed-area").innerHTML = "";
+            document.getElementById("user-typing-response").value = "";
+            document.getElementById("user-typing-response").disabled = false;
+
+            // Timer Setup
+            sessionStartTime = Date.now();
+            if (timerInterval) clearInterval(timerInterval);
+            timerInterval = setInterval(updateTimerDisplay, 1000);
+
+            // Voice Waveform Trigger
+            initVoiceWaveform();
+
+            // Rotate Initial Copilot Insight
+            rotateCopilotInsight();
+
+            // Prompt First Question
+            triggerAIQuestion(true);
+        }
+
+        // Format Seconds to MM:SS
+        function updateTimerDisplay() {
+            const delta = Date.now() - sessionStartTime;
+            const totalSecs = Math.floor(delta / 1000);
+            const minutes = Math.floor(totalSecs / 60).toString().padStart(2, "0");
+            const seconds = (totalSecs % 60).toString().padStart(2, "0");
+            document.getElementById("elapsed-time-counter").innerText = `${minutes}:${seconds}`;
+        }
+
+        // Rotate AI Copilot Coach Insights
+        function rotateCopilotInsight() {
+            const list = AI_INSIGHTS_ROTATOR[sessionDiscipline] || AI_INSIGHTS_ROTATOR.behavioral;
+            const randomInsight = list[Math.floor(Math.random() * list.length)];
+            document.getElementById("ai-live-insight").innerText = `"${randomInsight}"`;
+        }
+
+        // Trigger AI Mentor Question
+        function triggerAIQuestion(isInitial = false) {
+            const mentor = MENTOR_DATA[sessionMentor];
+            const currentQ = sessionQuestions[currentQuestionIndex];
+            
+            document.getElementById("question-progress-count").innerText = `Question ${currentQuestionIndex + 1} of ${sessionLength}`;
+            
+            // Set speaking state
+            setSimulationStatus(`${mentor.name} is speaking...`, true);
+
+            setTimeout(() => {
+                // Post to transcript
+                appendTranscriptMessage(mentor.name.toUpperCase(), currentQ.q, true);
+                
+                // Return to listening state
+                setSimulationStatus(`Listening...`, false);
+            }, isInitial ? 600 : 2000);
+        }
+
+        // Helper to update central avatar indicator texts
+        function setSimulationStatus(text, isActiveSpeaking) {
+            const statusEl = document.getElementById("mentor-status-text");
+            statusEl.innerText = text;
+            if (isActiveSpeaking) {
+                statusEl.classList.remove("opacity-60");
+                statusEl.classList.add("text-floral-pink");
+            } else {
+                statusEl.classList.add("opacity-60");
+                statusEl.classList.remove("text-floral-pink");
+            }
+        }
+
+        // Append UI Bubble message in scrollable transcript sidebar
+        function appendTranscriptMessage(sender, text, isAI, isTyping = false) {
+            const feed = document.getElementById("transcript-feed-area");
+            
+            if (isTyping) {
+                const bubble = document.createElement("div");
+                bubble.id = "typing-bubble-temp";
+                bubble.className = "space-y-1.5 self-start animate-pulse";
+                bubble.innerHTML = `
+                    <p class="text-[10px] font-bold text-floral-pink tracking-wider">${sender}</p>
+                    <div class="typing-indicator flex items-center gap-1 bg-white/5 border border-white/10 px-4 py-2.5 rounded-2xl rounded-tl-none w-20 justify-center">
+                        <span></span><span></span><span></span>
+                    </div>
+                `;
+                feed.appendChild(bubble);
+                feed.scrollTop = feed.scrollHeight;
+                return;
+            }
+
+            // Remove existing typing bubble
+            const prevTyping = document.getElementById("typing-bubble-temp");
+            if (prevTyping) prevTyping.remove();
+
+            const bubble = document.createElement("div");
+            bubble.className = "space-y-1 animate-fade-in";
+            
+            if (isAI) {
+                const mentor = MENTOR_DATA[sessionMentor];
+                const textStyle = sessionMentor === 'aria' ? 'text-floral-pink' : (sessionMentor === 'kai' ? 'text-luminous-gold' : 'text-ethereal-purple');
+                bubble.innerHTML = `
+                    <p class="text-[10px] font-bold tracking-wider ${textStyle}">${sender}</p>
+                    <div class="bg-white/5 border border-white/10 px-4 py-3 rounded-2xl rounded-tl-none text-on-surface opacity-90 leading-snug">
+                        ${text}
+                    </div>
+                `;
+            } else {
+                bubble.className = "space-y-1 opacity-80 flex flex-col items-end";
+                bubble.innerHTML = `
+                    <p class="text-[10px] font-bold text-on-surface-variant tracking-wider text-right">YOU</p>
+                    <div class="bg-primary/10 border border-primary/20 px-4 py-3 rounded-2xl rounded-tr-none text-on-surface leading-snug w-fit max-w-[90%] text-right">
+                        ${text}
+                    </div>
+                `;
+            }
+
+            feed.appendChild(bubble);
+            feed.scrollTop = feed.scrollHeight;
+        }
+
+        // Key Listener for Response Box
+        function handleInputKeydown(e) {
+            if (e.key === "Enter") {
+                submitResponse();
+            }
+        }
+
+        // Process response submission
+        function submitResponse() {
+            const input = document.getElementById("user-typing-response");
+            const responseText = input.value.trim();
+            if (!responseText) return;
+
+            // Clear & Disable Input Box
+            input.value = "";
+            input.disabled = true;
+            document.getElementById("response-submit-btn").disabled = true;
+
+            // Append to transcript feed
+            appendTranscriptMessage("YOU", responseText, false);
+
+            // Record response
+            const activeQuestion = sessionQuestions[currentQuestionIndex];
+            responseHistory.push({
+                question: activeQuestion.q,
+                response: responseText,
+                hintUsed: activeQuestion.hintUsed || false
+            });
+
+            // Update Metrics scores dynamically based on answers
+            computeDynamicScores(responseText);
+
+            // Set state: Analyzing / Thinking
+            const mentor = MENTOR_DATA[sessionMentor];
+            setSimulationStatus(`${mentor.name} is thinking...`, false);
+            
+            // Delay for AI reply to simulate live cognitive reflection
+            setTimeout(() => {
+                appendTranscriptMessage(mentor.name.toUpperCase(), "", true, true);
+            }, 800);
+
+            setTimeout(() => {
+                // Compute mock AI feedback commentary
+                const feedbackText = generateAIFeedbackText(responseText);
+                
+                // Increment question index
+                currentQuestionIndex++;
+
+                if (currentQuestionIndex < sessionLength) {
+                    // Update transcript with feedback, then trigger next question
+                    appendTranscriptMessage(mentor.name.toUpperCase(), feedbackText, true);
+                    
+                    setTimeout(() => {
+                        triggerAIQuestion(false);
+                        input.disabled = false;
+                        document.getElementById("response-submit-btn").disabled = false;
+                        input.focus();
+                        rotateCopilotInsight();
+                    }, 1200);
+                } else {
+                    // Final response processed. End session.
+                    appendTranscriptMessage(mentor.name.toUpperCase(), feedbackText + " That brings our session to a close! Let's review your simulated analytics.", true);
+                    
+                    setTimeout(() => {
+                        triggerEndSessionDashboard();
+                    }, 2500);
+                }
+            }, 3000);
+        }
+
+        // Formulate feedback template comments based on input length/keywords
+        function generateAIFeedbackText(answer) {
+            const feedbackPool = {
+                behavioral: [
+                    "Insightful representation. You communicated the situational constraints cleanly. I appreciated how you focused on stakeholder objectives.",
+                    "Strong contextual framing. To make this answer more resonant, try emphasizing how you resolved the conflict objectively without escalations.",
+                    "An informative outline. The active leadership details were compelling, showing a great degree of operational empathy."
+                ],
+                technical: [
+                    "Syntactically correct approach. Highlighting performance bottlenecks shows excellent operational frontend maturity.",
+                    "Very analytical structure. You covered virtual reconciliations well. Try to connect memory footprints to execution scope frames.",
+                    "Compelling execution paradigm. You mapped CORS vulnerabilities effectively. That fits nicely within robust API setups."
+                ],
+                system_design: [
+                    "Outstanding distributed architectural synthesis. Mating Redis caching speeds to database replicas meets key bottleneck parameters.",
+                    "A very scalable framework blueprint. Implementing push prioritization queues handles massive sudden spikes gracefully.",
+                    "Solid infrastructure flow. Focus on distributed key hashes to prevent hot partition clusters in global scale models."
+                ]
+            };
+
+            const pool = feedbackPool[sessionDiscipline] || feedbackPool.behavioral;
+            return pool[Math.floor(Math.random() * pool.length)];
+        }
+
+        // Algorithmic evaluation engine based on lexical metrics
+        function computeDynamicScores(text) {
+            const wordCount = text.split(/\s+/).length;
+            
+            // Adjust metrics with realistic deltas
+            let confidenceDelta = wordCount > 25 ? Math.floor(Math.random() * 8) + 2 : -Math.floor(Math.random() * 5);
+            let precisionDelta = text.length > 80 ? Math.floor(Math.random() * 7) + 3 : -Math.floor(Math.random() * 6);
+            let pacingDelta = (wordCount >= 15 && wordCount <= 45) ? Math.floor(Math.random() * 6) + 4 : -Math.floor(Math.random() * 4);
+
+            performanceMetrics.confidence = Math.min(100, Math.max(40, performanceMetrics.confidence + confidenceDelta));
+            performanceMetrics.articulation = Math.min(100, Math.max(40, performanceMetrics.articulation + precisionDelta));
+            performanceMetrics.calmness = Math.min(100, Math.max(40, performanceMetrics.calmness + pacingDelta));
+
+            updateMetricsDisplay();
+        }
+
+        // Update indicators, bars, and meters
+        function updateMetricsDisplay() {
+            document.getElementById("metric-val-confidence").innerText = `${performanceMetrics.confidence}%`;
+            document.getElementById("metric-bar-confidence").style.width = `${performanceMetrics.confidence}%`;
+
+            document.getElementById("metric-val-articulation").innerText = `${performanceMetrics.articulation}%`;
+            document.getElementById("metric-bar-articulation").style.width = `${performanceMetrics.articulation}%`;
+
+            document.getElementById("metric-val-calmness").innerText = `${performanceMetrics.calmness}%`;
+            document.getElementById("metric-bar-calmness").style.width = `${performanceMetrics.calmness}%`;
+        }
+
+        // Mute / Unmute Voice Waveform Toggles
+        function toggleAudioMute() {
+            isAudioMuted = !isAudioMuted;
+            const icon = document.getElementById("audio-mute-icon");
+            const btn = document.getElementById("audio-mute-toggle");
+
+            if (isAudioMuted) {
+                icon.innerText = "mic_off";
+                btn.querySelector('div').className = "w-10 h-10 rounded-full flex items-center justify-center bg-error-container/20 border border-error-container/40 text-error";
+            } else {
+                icon.innerText = "mic";
+                btn.querySelector('div').className = "w-10 h-10 rounded-full flex items-center justify-center bg-white/5 border border-white/10 text-on-surface-variant group-hover:text-white";
+            }
+        }
+
+        // Context-driven hint overlay
+        function triggerContextHint() {
+            const currentQ = sessionQuestions[currentQuestionIndex];
+            if (!currentQ) return;
+
+            currentQ.hintUsed = true;
+            document.getElementById("hint-content-paragraph").innerText = `"${currentQ.hint}"`;
+            document.getElementById("hint-modal-overlay").className = "fixed inset-0 bg-black/60 backdrop-blur-md flex items-center justify-center z-50 animate-fade-in";
+        }
+
+        function closeHintModal() {
+            document.getElementById("hint-modal-overlay").className = "fixed inset-0 bg-black/60 backdrop-blur-md hidden items-center justify-center z-50";
+        }
+
+        // End active session prematurely
+        function endSessionPrompt() {
+            if (confirm("Are you sure you want to conclude the mock session and generate your diagnostic scores?")) {
+                triggerEndSessionDashboard();
+            }
+        }
+
+        // Assemble diagnostic scores, save, and overlay modal
+        function triggerEndSessionDashboard() {
+            // Stop timers
+            if (timerInterval) clearInterval(timerInterval);
+
+            const mentor = MENTOR_DATA[sessionMentor];
+            document.getElementById("summary-mentor-name").innerText = `${mentor.name} (${mentor.title})`;
+
+            // Overall Score Computation
+            const totalScore = Math.round((performanceMetrics.confidence + performanceMetrics.articulation + performanceMetrics.calmness) / 3);
+            document.getElementById("summary-overall-score").innerText = `${totalScore}%`;
+
+            // Set specific scores
+            document.getElementById("summary-score-confidence").innerText = `${performanceMetrics.confidence}%`;
+            document.getElementById("summary-bar-confidence").style.width = `${performanceMetrics.confidence}%`;
+
+            document.getElementById("summary-score-articulation").innerText = `${performanceMetrics.articulation}%`;
+            document.getElementById("summary-bar-articulation").style.width = `${performanceMetrics.articulation}%`;
+
+            document.getElementById("summary-score-calmness").innerText = `${performanceMetrics.calmness}%`;
+            document.getElementById("summary-bar-calmness").style.width = `${performanceMetrics.calmness}%`;
+
+            // Populate accordion values of Question & Response Reviews
+            const container = document.getElementById("summary-accordion-container");
+            container.innerHTML = "";
+
+            responseHistory.forEach((item, index) => {
+                const accordionItem = document.createElement("div");
+                accordionItem.className = "liquid-glass rounded-lg border-white/5 overflow-hidden transition-all duration-300";
+                
+                // Detailed Exemplary Answers database mapping
+                const exemplaryAnswers = {
+                    behavioral: "An excellent answer utilizes the STAR layout. Express the team dispute context, detail structural solutions applied, outline metrics metrics achieved, and conclude with core interpersonal growth insights.",
+                    technical: "Highlight underlying operational bottlenecks. E.g. virtual diffing updates real HTML DOM nodes in batches using a heuristics O(N) strategy. Connect optimization speeds directly to frame latency scores.",
+                    system_design: "Outline key systemic parameters first. Detail read/write operations, choose secure API designs, build Kafka pub-sub priority buffers, map Redis connection states, and define schema database scaling structures."
+                };
+                
+                const expAnswer = exemplaryAnswers[sessionDiscipline] || exemplaryAnswers.behavioral;
+
+                accordionItem.innerHTML = `
+                    <button onclick="toggleAccordion('acc-${index}')" class="w-full text-left px-5 py-4 bg-white/5 hover:bg-white/10 flex justify-between items-center text-xs font-bold uppercase tracking-wider">
+                        <span>Q${index + 1}: ${item.question.substring(0, 50)}...</span>
+                        <span class="material-symbols-outlined text-sm" id="icon-acc-${index}">expand_more</span>
+                    </button>
+                    <div id="content-acc-${index}" class="hidden p-5 space-y-4 border-t border-white/5 text-sm bg-black/25">
+                        <div>
+                            <p class="text-[10px] font-bold text-floral-pink uppercase tracking-widest mb-1">Your response</p>
+                            <p class="text-on-surface-variant leading-relaxed italic">"${item.response}"</p>
+                        </div>
+                        <div class="border-t border-white/5 pt-3">
+                            <p class="text-[10px] font-bold text-luminous-gold uppercase tracking-widest mb-1">Lumina Recommended Blueprint</p>
+                            <p class="text-on-surface opacity-85 leading-relaxed">${expAnswer}</p>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(accordionItem);
+            });
+
+            // Display overlay
+            document.getElementById("summary-modal-overlay").className = "fixed inset-0 bg-black/80 backdrop-blur-lg flex items-center justify-center z-50 overflow-y-auto pt-16 pb-12 px-6 animate-fade-in";
+        }
+
+        // Toggle review accordion items
+        function toggleAccordion(id) {
+            const el = document.getElementById(`content-${id}`);
+            const icon = document.getElementById(`icon-${id}`);
+            if (el.classList.contains("hidden")) {
+                el.classList.remove("hidden");
+                icon.innerText = "expand_less";
+            } else {
+                el.classList.add("hidden");
+                icon.innerText = "expand_more";
+            }
+        }
+
+        // Save session details, save to localStorage, post to parent growth
+        function saveAndGoToGrowth() {
+            // Concoct payload
+            const delta = Date.now() - sessionStartTime;
+            const minutes = Math.floor(delta / 60000);
+            
+            const sessionResult = {
+                id: `sess-${Date.now()}`,
+                date: new Date().toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }),
+                discipline: sessionDiscipline,
+                mentor: MENTOR_DATA[sessionMentor].name,
+                duration: minutes || 1,
+                overallScore: Math.round((performanceMetrics.confidence + performanceMetrics.articulation + performanceMetrics.calmness) / 3),
+                metrics: performanceMetrics,
+                qCount: responseHistory.length
+            };
+
+            // Fetch current records
+            let saved = [];
+            try {
+                saved = JSON.parse(localStorage.getItem("lumina_sessions")) || [];
+            } catch(e) {
+                saved = [];
+            }
+
+            saved.unshift(sessionResult);
+            localStorage.setItem("lumina_sessions", JSON.stringify(saved));
+
+            // Notify parent shell to route navigation tab to Growth
+            window.parent.postMessage({ action: "navigate", page: "growth" }, "*");
+
+            // Clean UI
+            restartSessionSelector();
+        }
+
+        // Reset Simulator and show Role Selector overlay
+        function restartSessionSelector() {
+            document.getElementById("summary-modal-overlay").classList.add("hidden");
+            document.getElementById("simulation-workspace").classList.add("hidden");
+            document.getElementById("simulation-controls-bar").classList.add("hidden");
+            document.getElementById("session-timer-display").classList.add("hidden");
+            document.getElementById("selector-overlay").classList.remove("hidden");
+
+            if (timerInterval) clearInterval(timerInterval);
+            if (activeVoiceInterval) clearInterval(activeVoiceInterval);
+        }
+    </script>
+</body>
+</html>

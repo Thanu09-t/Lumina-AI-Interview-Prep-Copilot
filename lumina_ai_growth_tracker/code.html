@@ -1,0 +1,920 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Growth Tracker | Lumina AI</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Barlow:wght@300;400;500;700&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "surface-variant": "#3a3336",
+                        "secondary": "#e2c62d",
+                        "surface-tint": "#ffaeda",
+                        "outline": "#9d8c93",
+                        "on-primary": "#541a3f",
+                        "outline-variant": "#514349",
+                        "surface-container-high": "#2f282b",
+                        "surface-container-highest": "#3a3336",
+                        "on-secondary-fixed": "#211b00",
+                        "luminous-gold": "#FBBF24",
+                        "inverse-on-surface": "#352f31",
+                        "inverse-primary": "#8a486f",
+                        "space-obsidian": "#000000",
+                        "on-tertiary": "#133801",
+                        "error-container": "#93000a",
+                        "tertiary-fixed-dim": "#a6d38b",
+                        "ethereal-purple": "#A855F7",
+                        "background": "#171214",
+                        "error": "#ffb4ab",
+                        "tertiary-container": "#a0cd85",
+                        "secondary-container": "#c1a800",
+                        "on-tertiary-container": "#31581d",
+                        "surface-dim": "#171214",
+                        "inverse-surface": "#ecdfe3",
+                        "on-tertiary-fixed": "#072100",
+                        "surface-bright": "#3f373a",
+                        "surface-container-lowest": "#120d0f",
+                        "on-error": "#690005",
+                        "on-secondary": "#393000",
+                        "on-primary-container": "#78395f",
+                        "glass-border": "rgba(255, 255, 255, 0.45)",
+                        "surface-container-low": "#201a1d",
+                        "on-tertiary-fixed-variant": "#2a5016",
+                        "floral-pink": "#F472B6",
+                        "on-background": "#ecdfe3",
+                        "primary": "#ffcfe6",
+                        "on-secondary-container": "#483d00",
+                        "space-charcoal": "#121212",
+                        "primary-container": "#f9a8d4",
+                        "on-surface-variant": "#d5c1c9",
+                        "surface-container": "#241e21",
+                        "primary-fixed": "#ffd8ea",
+                        "primary-fixed-dim": "#ffaeda",
+                        "on-surface": "#ecdfe3",
+                        "secondary-fixed-dim": "#e2c62d",
+                        "tertiary-fixed": "#c1f0a4",
+                        "on-error-container": "#ffdad6",
+                        "on-secondary-fixed-variant": "#524600",
+                        "tertiary": "#bbe99f",
+                        "on-primary-fixed-variant": "#6f3157",
+                        "secondary-fixed": "#ffe24c",
+                        "surface": "#171214",
+                        "on-primary-fixed": "#3a0329"
+                    },
+                    borderRadius: {
+                        DEFAULT: "1rem",
+                        lg: "2rem",
+                        xl: "3rem",
+                        full: "9999px"
+                    },
+                    spacing: {
+                        gutter: "1.5rem",
+                        "container-max": "1280px",
+                        "margin-mobile": "1.5rem",
+                        "section-gap": "8rem",
+                        "margin-desktop": "5rem"
+                    },
+                    fontFamily: {
+                        "display-lg-mobile": ["Instrument Serif"],
+                        "label-sm": ["Barlow"],
+                        "label-md": ["Barlow"],
+                        "body-md": ["Barlow"],
+                        "headline-lg": ["Instrument Serif"],
+                        "body-lg": ["Barlow"],
+                        "headline-md": ["Instrument Serif"],
+                        "display-lg": ["Instrument Serif"]
+                    },
+                    fontSize: {
+                        "display-lg-mobile": ["56px", { lineHeight: "0.9", letterSpacing: "-2px", fontWeight: "400" }],
+                        "label-sm": ["11px", { lineHeight: "1.0", letterSpacing: "0px", fontWeight: "400" }],
+                        "label-md": ["14px", { lineHeight: "1.0", letterSpacing: "0.05em", fontWeight: "500" }],
+                        "body-md": ["16px", { lineHeight: "1.5", letterSpacing: "0px", fontWeight: "400" }],
+                        "headline-lg": ["64px", { lineHeight: "0.9", letterSpacing: "-3px", fontWeight: "400" }],
+                        "body-lg": ["18px", { lineHeight: "1.4", letterSpacing: "0px", fontWeight: "300" }],
+                        "headline-md": ["40px", { lineHeight: "1.0", letterSpacing: "-1px", fontWeight: "400" }],
+                        "display-lg": ["88px", { lineHeight: "0.8", letterSpacing: "-4px", fontWeight: "400" }]
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #000;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+
+        .liquid-glass {
+            background: rgba(23, 18, 20, 0.4);
+            backdrop-filter: blur(24px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.1);
+        }
+
+        .liquid-glass-strong {
+            background: rgba(255, 255, 255, 0.95);
+            color: #000;
+            box-shadow: 0 0 40px rgba(255, 207, 230, 0.4);
+        }
+
+        .path-glow {
+            position: fixed;
+            width: 80vw;
+            height: 80vh;
+            background: radial-gradient(circle, rgba(244, 114, 182, 0.1) 0%, rgba(251, 191, 36, 0.05) 40%, transparent 70%);
+            filter: blur(80px);
+            pointer-events: none;
+            z-index: -1;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            transition: left 0.3s ease-out, top 0.3s ease-out;
+        }
+
+        .chart-path {
+            stroke-dasharray: 1000;
+            stroke-dashoffset: 1000;
+            animation: draw 2s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+            transition: d 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        @keyframes draw {
+            to { stroke-dashoffset: 0; }
+        }
+
+        .badge-circle {
+            transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+
+        .badge-circle:hover {
+            transform: translateY(-8px) scale(1.05);
+            box-shadow: 0 0 30px rgba(168, 85, 247, 0.3);
+        }
+
+        .pulse-glow {
+            animation: pulse 4s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.5; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.05); }
+        }
+
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+        }
+
+        /* Printable styles for PDF downloads */
+        @media print {
+            body {
+                background: white !important;
+                color: black !important;
+            }
+            .no-print {
+                display: none !important;
+            }
+            .print-only {
+                display: block !important;
+            }
+            .liquid-glass {
+                background: white !important;
+                border: 1px solid #ccc !important;
+                color: black !important;
+                backdrop-filter: none !important;
+                box-shadow: none !important;
+            }
+        }
+    </style>
+</head>
+<body class="font-body-md text-on-surface selection:bg-primary-container selection:text-on-primary-container relative">
+    
+    <!-- Ambient Environment -->
+    <div class="fixed inset-0 z-[-2] bg-space-obsidian overflow-hidden">
+        <img class="w-full h-full object-cover opacity-20 mix-blend-screen scale-110" data-alt="A cinematic sun-drenched forest path with ethereal light rays filtering through ancient trees." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBgisbuTs34P7QDL55B1x4DxZeWArUTme71iNCFwGVna_8Y4rrZgliyv0zAfQSe_mkcMnINOxS9xyDZEatVOvspSXjtgOoLdazyMwtQATFI0i6Xklxr5K2tSYM2GC9D2FS3R-5Ht3gYfPVNrFn30q70_TFR1BpYv9Rj4CJZpbyChviSHhvP2Izg4xL_tQNQ1j5uiL4pibBzkF3Dg7U35s5p8PpcsivYvFFwEwY976k83Dx-a_Lezhzdy-T1HgdpwAZCSb7q8zZ9Juo"/>
+        <div class="path-glow"></div>
+    </div>
+
+    <!-- TopNavBar -->
+    <nav class="flex justify-between items-center z-50 fixed top-6 left-1/2 -translate-x-1/2 w-[90%] max-w-7xl rounded-full border border-glass-border px-8 py-3 bg-surface-container/30 backdrop-blur-[50px] border-white/10 shadow-2xl">
+        <div class="font-display-lg text-headline-md text-primary drop-shadow-[0_0_15px_rgba(255,207,230,0.5)] cursor-pointer" onclick="navigateParent('home')">Lumina AI</div>
+        <div class="hidden md:flex items-center space-x-10">
+            <a class="text-on-surface-variant hover:text-primary transition-colors duration-300 font-label-md text-label-md" href="#" onclick="navigateParent('simulator')">Simulate</a>
+            <a class="text-on-surface-variant hover:text-primary transition-colors duration-300 font-label-md text-label-md" href="#" onclick="navigateParent('resume')">Resume</a>
+            <a class="text-floral-pink font-bold border-b-2 border-floral-pink pb-1 font-label-md text-label-md" href="#" onclick="navigateParent('growth')">Growth</a>
+            <a class="text-on-surface-variant hover:text-primary transition-colors duration-300 font-label-md text-label-md" href="#" onclick="navigateParent('home')">Home</a>
+        </div>
+        <div class="flex items-center gap-4">
+            <span class="material-symbols-outlined text-on-surface-variant cursor-pointer hover:text-primary transition-all" onclick="navigateParent('growth')">account_circle</span>
+            <button onclick="navigateParent('simulator')" class="liquid-glass-strong px-6 py-2 rounded-full font-label-md text-label-md flex items-center gap-2 hover:scale-105 transition-all">
+                Get Started
+                <span class="material-symbols-outlined text-[18px]">north_east</span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="relative z-10 pt-32 pb-40 px-gutter max-w-container-max mx-auto">
+        
+        <header class="mb-16 text-center">
+            <span class="text-floral-pink font-label-md text-label-md uppercase tracking-[0.2em] mb-4 block">Personal Evolution</span>
+            <h1 class="font-headline-lg text-headline-lg text-on-surface leading-tight">Growth &amp; Progress</h1>
+            <p class="font-body-lg text-body-lg text-on-surface-variant mt-4 max-w-2xl mx-auto">Visualize your ascent. Every interaction with Lumina refines your technical precision and amplifies your professional confidence.</p>
+        </header>
+
+        <!-- Bento Grid Layout -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+            
+            <!-- Performance Chart Card (Left) -->
+            <div class="lg:col-span-8 liquid-glass rounded-xl p-8 flex flex-col h-[500px] justify-between relative">
+                
+                <div class="flex justify-between items-end mb-4 flex-wrap gap-4">
+                    <div>
+                        <h3 class="font-headline-md text-headline-md text-primary leading-none">Performance Delta</h3>
+                        <p class="font-body-md text-body-md text-on-surface-variant mt-2">Correlation: Technical Accuracy vs. Confidence</p>
+                    </div>
+                    
+                    <!-- Time Period selector & Legend -->
+                    <div class="flex items-center gap-6">
+                        <div class="flex bg-white/5 p-1 rounded-full border border-white/5 text-xs font-label-md shrink-0">
+                            <button onclick="changePeriod('1w')" id="p-1w" class="period-btn px-4 py-1.5 rounded-full text-on-surface-variant hover:text-white transition-colors duration-300">1W</button>
+                            <button onclick="changePeriod('1m')" id="p-1m" class="period-btn px-4 py-1.5 rounded-full text-on-surface-variant hover:text-white transition-colors duration-300">1M</button>
+                            <button onclick="changePeriod('3m')" id="p-3m" class="period-btn px-4 py-1.5 rounded-full text-on-surface-variant hover:text-white transition-colors duration-300">3M</button>
+                            <button onclick="changePeriod('all')" id="p-all" class="period-btn px-4 py-1.5 rounded-full text-primary font-bold bg-white/10 shadow-sm transition-all duration-300">ALL</button>
+                        </div>
+                        <div class="hidden sm:flex gap-4 shrink-0">
+                            <div class="flex items-center gap-2">
+                                <span class="w-3 h-3 rounded-full bg-floral-pink"></span>
+                                <span class="font-label-sm text-label-sm text-on-surface-variant uppercase">Confidence</span>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <span class="w-3 h-3 rounded-full bg-luminous-gold"></span>
+                                <span class="font-label-sm text-label-sm text-on-surface-variant uppercase">Technical</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SVG Chart with tooltips -->
+                <div class="flex-grow relative mt-4 h-full min-h-[220px]">
+                    <svg id="chart-svg-view" class="w-full h-full overflow-visible" viewbox="0 0 800 240">
+                        <!-- Horizontal Grid Lines -->
+                        <line stroke="rgba(255,255,255,0.05)" x1="0" x2="800" y1="220" y2="220"></line>
+                        <line stroke="rgba(255,255,255,0.05)" x1="0" x2="800" y1="150" y2="150"></line>
+                        <line stroke="rgba(255,255,255,0.05)" x1="0" x2="800" y1="80" y2="80"></line>
+                        <line stroke="rgba(255,255,255,0.05)" x1="0" x2="800" y1="10" y2="10"></line>
+                        
+                        <!-- Data Paths -->
+                        <path id="chart-path-confidence" class="chart-path" d="M0,180 C150,170 300,120 450,130 C600,140 700,70 800,20" fill="none" stroke="url(#pinkGradient)" stroke-linecap="round" stroke-width="4"></path>
+                        <path id="chart-path-technical" class="chart-path" d="M0,190 C150,150 250,110 350,100 C450,90 600,50 800,40" fill="none" stroke="url(#goldGradient)" stroke-dasharray="8 8" stroke-linecap="round" stroke-width="4"></path>
+                        
+                        <!-- Interactive Circles / Tooltip Nodes -->
+                        <g id="chart-nodes-group">
+                            <!-- Populated Dynamically -->
+                        </g>
+
+                        <!-- Gradients -->
+                        <defs>
+                            <linearGradient id="pinkGradient" x1="0" x2="1" y1="0" y2="0">
+                                <stop offset="0%" stop-color="#F472B6"></stop>
+                                <stop offset="100%" stop-color="#A855F7"></stop>
+                            </linearGradient>
+                            <linearGradient id="goldGradient" x1="0" x2="1" y1="0" y2="0">
+                                <stop offset="0%" stop-color="#FBBF24"></stop>
+                                <stop offset="100%" stop-color="#F59E0B"></stop>
+                            </linearGradient>
+                        </defs>
+                    </svg>
+
+                    <!-- Chart Tooltip Overlay element -->
+                    <div id="chart-tooltip-hover" class="absolute bg-black/80 backdrop-blur-md border border-white/20 px-3.5 py-2 rounded-lg text-xs hidden pointer-events-none z-30 shadow-2xl flex flex-col gap-1 transition-all duration-150">
+                        <span id="tooltip-date" class="text-on-surface-variant font-bold uppercase tracking-wider text-[9px]">DATE</span>
+                        <span id="tooltip-value" class="text-primary font-bold">SCORE</span>
+                    </div>
+                </div>
+
+                <div class="flex justify-between font-label-md text-label-md text-on-surface-variant/40 mt-6 pt-6 border-t border-white/5">
+                    <span>JAN 14</span>
+                    <span>JAN 28</span>
+                    <span>FEB 11</span>
+                    <span>FEB 25</span>
+                    <span>TODAY</span>
+                </div>
+            </div>
+
+            <!-- Upcoming Interviews Widget (Right) -->
+            <div class="lg:col-span-4 liquid-glass rounded-xl p-8 flex flex-col justify-between h-[500px]">
+                <div class="flex items-center gap-3 mb-6">
+                    <div class="w-11 h-11 rounded-xl liquid-glass flex items-center justify-center border border-white/5 shrink-0">
+                        <span class="material-symbols-outlined text-primary">calendar_month</span>
+                    </div>
+                    <h3 class="font-headline-md text-[24px] text-on-surface italic">Upcoming Trials</h3>
+                </div>
+                
+                <!-- Scrollable trials list -->
+                <div id="upcoming-trials-feed" class="space-y-4 overflow-y-auto custom-scrollbar flex-grow pr-2">
+                    <!-- Populated dynamically -->
+                </div>
+
+                <button onclick="toggleScheduleModal()" class="w-full mt-6 py-4 border border-dashed border-white/20 hover:border-primary hover:text-primary rounded-lg font-label-md text-label-md text-on-surface-variant transition-all shrink-0 active:scale-95">
+                    + Schedule New Simulation
+                </button>
+            </div>
+
+            <!-- Badge Achievements Grid -->
+            <div class="lg:col-span-12 grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-6">
+                <!-- Badge 1: Clear Articulator -->
+                <div onclick="openBadgeDetails('Clear Articulator', 'Express mock ideas cleanly with optimal pace delivery constraints.', 'Unlocks after 5 sessions of over 85% articulation accuracy.', 80, 'Level 3 — 80% Unlocked', 'Not Earned')" class="badge-item liquid-glass rounded-xl p-6 flex flex-col items-center justify-center text-center cursor-pointer border border-transparent hover:border-floral-pink/20 transition-all">
+                    <div class="w-20 h-20 rounded-full badge-circle liquid-glass flex items-center justify-center mb-4 relative bg-floral-pink/10 border border-floral-pink/30">
+                        <span class="material-symbols-outlined text-3xl text-floral-pink">auto_awesome</span>
+                    </div>
+                    <span class="font-label-md text-label-md text-on-surface font-bold">Clear Articulator</span>
+                    <span class="text-[11px] text-on-surface-variant uppercase tracking-widest mt-1">Tier 3</span>
+                </div>
+                
+                <!-- Badge 2: Tech Titan -->
+                <div onclick="openBadgeDetails('Tech Titan', 'Acquire stellar scores across highly specialized algorithm paradigms.', 'Unlocks after 3 successful Frontend/Tech simulation answers.', 100, 'Unlocked', 'Feb 26, 2026')" class="badge-item liquid-glass rounded-xl p-6 flex flex-col items-center justify-center text-center cursor-pointer border border-transparent hover:border-primary/20 transition-all">
+                    <div class="w-20 h-20 rounded-full badge-circle liquid-glass flex items-center justify-center mb-4 border-primary/40 border bg-primary/10">
+                        <span class="material-symbols-outlined text-3xl text-primary">verified</span>
+                    </div>
+                    <span class="font-label-md text-label-md text-on-surface font-bold">Tech Titan</span>
+                    <span class="text-[11px] text-on-surface-variant uppercase tracking-widest mt-1">Tier 1</span>
+                </div>
+
+                <!-- Badge 3: Calm Under Pressure -->
+                <div onclick="openBadgeDetails('Calm Under Pressure', 'Maintain vocal calming indices above 90% in Deep exploration sessions.', 'Unlocks by keeping calmness at 92%+ for 5 questions consecutively.', 40, 'Locked — 40% Complete', 'Locked')" class="badge-item liquid-glass rounded-xl p-6 flex flex-col items-center justify-center text-center opacity-50 cursor-pointer border border-transparent hover:border-white/10 transition-all">
+                    <div class="w-20 h-20 rounded-full badge-circle liquid-glass flex items-center justify-center mb-4 grayscale">
+                        <span class="material-symbols-outlined text-3xl">psychology</span>
+                    </div>
+                    <span class="font-label-md text-label-md text-on-surface">Calm Under Pressure</span>
+                    <span class="text-[11px] text-on-surface-variant uppercase tracking-widest mt-1">Locked</span>
+                </div>
+
+                <!-- Badge 4: 7-Day Streak -->
+                <div onclick="openBadgeDetails('7-Day Streak', 'Complete at least 1 mock interview simulation daily for 7 consecutive days.', 'Keep the practice pipeline active daily without interruptions.', 100, 'Unlocked', 'Feb 28, 2026')" class="badge-item liquid-glass rounded-xl p-6 flex flex-col items-center justify-center text-center cursor-pointer border border-transparent hover:border-luminous-gold/20 transition-all">
+                    <div class="w-20 h-20 rounded-full badge-circle liquid-glass flex items-center justify-center mb-4 border-luminous-gold/40 border bg-luminous-gold/10">
+                        <span class="material-symbols-outlined text-3xl text-luminous-gold">stars</span>
+                    </div>
+                    <span class="font-label-md text-label-md text-on-surface font-bold">7-Day Streak</span>
+                    <span class="text-[11px] text-on-surface-variant uppercase tracking-widest mt-1">Tier 2</span>
+                </div>
+
+                <!-- Badge 5: Team Player -->
+                <div onclick="openBadgeDetails('Team Player', 'Successfully answer all behavioral dispute conflict situations.', 'Complete 2 full behavioral sync rounds with high cultural index scores.', 100, 'Unlocked', 'May 28, 2026')" class="badge-item liquid-glass rounded-xl p-6 flex flex-col items-center justify-center text-center cursor-pointer border border-transparent hover:border-ethereal-purple/20 transition-all">
+                    <div class="w-20 h-20 rounded-full badge-circle liquid-glass flex items-center justify-center mb-4 bg-ethereal-purple/10 border border-ethereal-purple/30">
+                        <span class="material-symbols-outlined text-3xl text-ethereal-purple">diversity_3</span>
+                    </div>
+                    <span class="font-label-md text-label-md text-on-surface font-bold">Team Player</span>
+                    <span class="text-[11px] text-on-surface-variant uppercase tracking-widest mt-1">Tier 1</span>
+                </div>
+
+                <!-- Badge 6: Career Catalyst -->
+                <div onclick="openBadgeDetails('Career Catalyst', 'Synchronize resume optimization and complete 10 full mock simulations.', 'Complete full structural resume analyzer checklists.', 15, 'Locked — 15% Complete', 'Locked')" class="badge-item liquid-glass rounded-xl p-6 flex flex-col items-center justify-center text-center opacity-50 cursor-pointer border border-transparent hover:border-white/10 transition-all">
+                    <div class="w-20 h-20 rounded-full badge-circle liquid-glass flex items-center justify-center mb-4 grayscale">
+                        <span class="material-symbols-outlined text-3xl">rocket_launch</span>
+                    </div>
+                    <span class="font-label-md text-label-md text-on-surface">Career Catalyst</span>
+                    <span class="text-[11px] text-on-surface-variant uppercase tracking-widest mt-1">Locked</span>
+                </div>
+            </div>
+
+            <!-- Weekly Summary Report Card (Bottom) -->
+            <div class="lg:col-span-12 liquid-glass rounded-xl p-8 overflow-hidden relative">
+                <div class="absolute top-0 right-0 w-64 h-64 bg-floral-pink/10 blur-[100px] pointer-events-none"></div>
+                
+                <div class="flex flex-col md:flex-row justify-between items-center gap-8 relative z-10">
+                    <div class="flex-1">
+                        <h3 class="font-headline-md text-headline-md text-on-surface italic leading-none mb-3">Weekly Summary</h3>
+                        <p id="summary-coaching-p" class="font-body-md text-body-md text-on-surface-variant max-w-xl">Your resonance score has increased by 14% this week. Focus on your "System Design Fundamentals" to maintain this trajectory.</p>
+                        
+                        <div class="flex gap-8 mt-8 flex-wrap">
+                            <div>
+                                <span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest">Total Practice</span>
+                                <div id="summary-stat-hours" class="text-[32px] font-display-lg text-primary mt-1">12.4 hrs</div>
+                            </div>
+                            <div>
+                                <span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest">Avg. Confidence</span>
+                                <div id="summary-stat-confidence" class="text-[32px] font-display-lg text-luminous-gold mt-1">88%</div>
+                            </div>
+                            <div>
+                                <span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest">Questions Cleared</span>
+                                <div id="summary-stat-questions" class="text-[32px] font-display-lg text-on-surface mt-1">142</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="w-full md:w-auto">
+                        <div class="liquid-glass p-8 rounded-xl border-primary/20 bg-primary/5 flex flex-col items-center">
+                            <span class="font-label-md text-label-md text-on-surface-variant mb-2">Overall Growth Status</span>
+                            <div id="summary-growth-status" class="text-headline-lg font-headline-lg text-primary pulse-glow leading-none">Vanguard</div>
+                            <button onclick="downloadPDFReport()" class="mt-6 font-label-md text-label-md text-floral-pink flex items-center gap-2 group hover:gap-3 transition-all">
+                                Download PDF Report
+                                <span class="material-symbols-outlined text-[16px]">download</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- SYSTEM GLASS MODAL: Schedule Simulation Modal -->
+    <div id="schedule-modal-overlay" class="fixed inset-0 bg-black/60 backdrop-blur-md hidden items-center justify-center z-50 p-6">
+        <div class="liquid-glass p-8 rounded-lg max-w-lg w-full relative">
+            <div class="flex justify-between items-center border-b border-white/10 pb-4 mb-6">
+                <div class="flex items-center gap-2">
+                    <span class="material-symbols-outlined text-primary">calendar_month</span>
+                    <h3 class="font-headline-md text-[24px] text-white italic">Schedule New Simulation</h3>
+                </div>
+                <button onclick="toggleScheduleModal()" class="w-8 h-8 rounded-full bg-white/5 border border-white/10 flex items-center justify-center hover:bg-white/15 transition-all">
+                    <span class="material-symbols-outlined text-sm">close</span>
+                </button>
+            </div>
+
+            <form id="schedule-form" onsubmit="handleScheduleForm(event)" class="space-y-4 text-sm">
+                <div>
+                    <label class="block font-label-sm text-on-surface-variant uppercase tracking-wider mb-1.5">Target Role Title</label>
+                    <input type="text" id="sched-role" required placeholder="e.g. Systems Engineer at Stripe" class="w-full bg-white/5 border border-white/10 rounded-lg py-2 px-3 focus:outline-none focus:border-primary text-white" />
+                </div>
+                
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block font-label-sm text-on-surface-variant uppercase tracking-wider mb-1.5">Date</label>
+                        <input type="date" id="sched-date" required class="w-full bg-white/5 border border-white/10 rounded-lg py-2 px-3 focus:outline-none focus:border-primary text-white text-xs" />
+                    </div>
+                    <div>
+                        <label class="block font-label-sm text-on-surface-variant uppercase tracking-wider mb-1.5">Time</label>
+                        <input type="time" id="sched-time" required class="w-full bg-white/5 border border-white/10 rounded-lg py-2 px-3 focus:outline-none focus:border-primary text-white text-xs" />
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block font-label-sm text-on-surface-variant uppercase tracking-wider mb-1.5">Select Mentor</label>
+                    <select id="sched-mentor" class="w-full bg-white/5 border border-white/10 rounded-lg py-2 px-3 focus:outline-none focus:border-primary text-white">
+                        <option value="Aria">Aria - Behavioral Lead</option>
+                        <option value="Kai">Kai - Frontend Systems</option>
+                        <option value="Elena">Elena - Distributed Scale</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label class="block font-label-sm text-on-surface-variant uppercase tracking-wider mb-1.5">Simulation Category</label>
+                    <select id="sched-type" class="w-full bg-white/5 border border-white/10 rounded-lg py-2 px-3 focus:outline-none focus:border-primary text-white">
+                        <option value="Behavioral sync">Behavioral Synchronization</option>
+                        <option value="Frontend engineering">Frontend & Architecture</option>
+                        <option value="System Design">System Architecture</option>
+                    </select>
+                </div>
+
+                <button type="submit" class="liquid-glass-strong w-full py-4 rounded-full font-label-md text-xs uppercase tracking-widest text-center hover:scale-[1.02] active:scale-95 transition-all mt-6 shadow-md">
+                    Lock In Schedule
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- SYSTEM GLASS MODAL: Badge Details Modal -->
+    <div id="badge-modal-overlay" class="fixed inset-0 bg-black/60 backdrop-blur-md hidden items-center justify-center z-50 p-6">
+        <div class="liquid-glass p-8 rounded-lg max-w-md w-full relative text-center">
+            <button onclick="closeBadgeModal()" class="absolute top-4 right-4 w-8 h-8 rounded-full bg-white/5 border border-white/10 flex items-center justify-center hover:bg-white/15 transition-all">
+                <span class="material-symbols-outlined text-sm">close</span>
+            </button>
+            
+            <div id="badge-modal-icon-container" class="w-24 h-24 rounded-full mx-auto flex items-center justify-center mb-6 bg-floral-pink/10 border border-floral-pink/30 shadow-xl">
+                <span id="badge-modal-icon" class="material-symbols-outlined text-4xl text-floral-pink">auto_awesome</span>
+            </div>
+
+            <h3 id="badge-modal-title" class="font-headline-md text-[28px] text-white italic leading-tight mb-2">Clear Articulator</h3>
+            <span id="badge-modal-status-badge" class="px-3 py-1 rounded-full text-[10px] font-bold tracking-widest uppercase bg-floral-pink/20 text-floral-pink border border-floral-pink/30">Level 3</span>
+            
+            <div class="my-6 border-t border-white/5 pt-6 text-sm text-on-surface-variant leading-relaxed text-left space-y-4">
+                <div>
+                    <span class="text-[10px] uppercase font-bold text-primary tracking-wider">Description</span>
+                    <p id="badge-modal-desc" class="mt-1">Express ideas clearly with optimal pace and articulation scales.</p>
+                </div>
+                <div>
+                    <span class="text-[10px] uppercase font-bold text-primary tracking-wider">Criteria to unlock</span>
+                    <p id="badge-modal-criteria" class="mt-1">Complete 5 mock simulations with confidence ratings over 85%.</p>
+                </div>
+                <div id="badge-modal-earned-row" class="hidden">
+                    <span class="text-[10px] uppercase font-bold text-luminous-gold tracking-wider">Earned Date</span>
+                    <p id="badge-modal-earned-date" class="mt-1 font-bold text-white">Feb 26, 2026</p>
+                </div>
+                <div id="badge-modal-progress-row">
+                    <span class="text-[10px] uppercase font-bold text-primary tracking-wider">Progress</span>
+                    <div class="flex items-center gap-3 mt-1.5">
+                        <div class="h-2 bg-white/5 rounded-full overflow-hidden flex-grow border border-white/5">
+                            <div id="badge-modal-progress-bar" class="h-full bg-floral-pink" style="width: 80%"></div>
+                        </div>
+                        <span id="badge-modal-progress-text" class="text-xs font-bold text-white shrink-0">80%</span>
+                    </div>
+                </div>
+            </div>
+
+            <button onclick="closeBadgeModal()" class="liquid-glass-strong w-full py-3.5 rounded-full font-label-md text-xs uppercase tracking-widest text-center hover:scale-[1.02] active:scale-95 transition-all">
+                Close Diagnostics
+            </button>
+        </div>
+    </div>
+
+    <!-- CORE INTERACTIVITY ENGINE -->
+    <script>
+        // Seed default scheduled trials
+        const DEFAULT_TRIALS = [
+            {
+                id: "trial-1",
+                role: "Senior UX Designer",
+                date: "2026-05-30",
+                time: "09:00",
+                mentor: "Elena",
+                type: "Behavioral sync"
+            },
+            {
+                id: "trial-2",
+                role: "Systems Architect",
+                date: "2026-06-03",
+                time: "14:30",
+                mentor: "Kai",
+                type: "System Design"
+            }
+        ];
+
+        // Chart Coordinates for different periods
+        const CHART_PATHS = {
+            "1w": {
+                confidence: "M0,210 C150,200 300,180 450,150 C600,120 700,90 800,60",
+                technical: "M0,200 C150,180 300,160 450,130 C600,110 700,80 800,50",
+                dates: ["MAY 23", "MAY 24", "MAY 25", "MAY 26", "TODAY"],
+                confVals: [30, 40, 52, 68, 80],
+                techVals: [40, 50, 62, 70, 84]
+            },
+            "1m": {
+                confidence: "M0,200 C200,180 400,150 600,110 C700,90 750,70 800,50",
+                technical: "M0,190 C200,160 400,130 600,90 C700,70 750,60 800,40",
+                dates: ["APR 29", "MAY 06", "MAY 13", "MAY 20", "TODAY"],
+                confVals: [42, 54, 60, 78, 86],
+                techVals: [48, 56, 68, 79, 88]
+            },
+            "3m": {
+                confidence: "M0,180 C100,160 200,120 300,130 C400,140 500,80 600,90 C700,100 800,30",
+                technical: "M0,160 C150,150 250,110 350,100 C450,90 600,50 800,40",
+                dates: ["MAR 01", "MAR 22", "APR 12", "MAY 03", "TODAY"],
+                confVals: [40, 50, 56, 74, 91],
+                techVals: [46, 52, 64, 82, 88]
+            },
+            "all": {
+                confidence: "M0,180 C150,170 300,120 450,130 C600,140 700,70 800,20",
+                technical: "M0,190 C150,150 250,110 350,100 C450,90 600,50 800,40",
+                dates: ["JAN 14", "JAN 28", "FEB 11", "FEB 25", "TODAY"],
+                confVals: [48, 58, 62, 79, 94],
+                techVals: [40, 52, 68, 80, 89]
+            }
+        };
+
+        let activePeriod = "all";
+        let activeTrialsList = [];
+
+        // Parent bridge
+        function navigateParent(page) {
+            window.parent.postMessage({ action: "navigate", page: page }, "*");
+        }
+
+        // Initialize Grow tracker data
+        window.addEventListener("DOMContentLoaded", () => {
+            loadGrowDashboard();
+            renderUpcomingTrials();
+            changePeriod("all");
+            initParallaxGlow();
+        });
+
+        // Parallax cursor track
+        function initParallaxGlow() {
+            document.addEventListener('mousemove', (e) => {
+                const glow = document.querySelector('.path-glow');
+                const x = e.clientX;
+                const y = e.clientY;
+                glow.style.left = `${x}px`;
+                glow.style.top = `${y}px`;
+            });
+        }
+
+        // Read LocalStorage variables to set stats
+        function loadGrowDashboard() {
+            let sessions = [];
+            try {
+                sessions = JSON.parse(localStorage.getItem("lumina_sessions")) || [];
+            } catch(e) {
+                sessions = [];
+            }
+
+            if (sessions.length > 0) {
+                // Sum values dynamically
+                let hours = 0;
+                let totalScore = 0;
+                let questions = 0;
+
+                sessions.forEach(s => {
+                    hours += (s.duration / 60);
+                    totalScore += s.overallScore;
+                    questions += s.qCount;
+                });
+
+                // Round averages
+                const roundedHours = Math.max(0.5, Math.round(hours * 10) / 10);
+                const avgScore = Math.round(totalScore / sessions.length);
+
+                document.getElementById("summary-stat-hours").innerText = `${roundedHours} hrs`;
+                document.getElementById("summary-stat-confidence").innerText = `${avgScore}%`;
+                document.getElementById("summary-stat-questions").innerText = `${questions}`;
+
+                // Recalculate rank badge
+                let status = "Pathfinder";
+                if (avgScore >= 90) status = "Elite Vanguard";
+                else if (avgScore >= 80) status = "Vanguard";
+                else if (avgScore >= 70) status = "Aspirant";
+
+                document.getElementById("summary-growth-status").innerText = status;
+                document.getElementById("summary-coaching-p").innerText = `Your average mock simulation score is ${avgScore}% across ${sessions.length} recorded session(s). Keep exercising technical nodes!`;
+            } else {
+                // Default high quality values
+                document.getElementById("summary-stat-hours").innerText = "12.4 hrs";
+                document.getElementById("summary-stat-confidence").innerText = "88%";
+                document.getElementById("summary-stat-questions").innerText = "142";
+                document.getElementById("summary-growth-status").innerText = "Vanguard";
+            }
+        }
+
+        // Change chart data timelines
+        function changePeriod(period) {
+            activePeriod = period;
+            
+            // Remove active states on buttons
+            document.querySelectorAll(".period-btn").forEach(btn => {
+                btn.className = "period-btn px-4 py-1.5 rounded-full text-on-surface-variant hover:text-white transition-colors duration-300";
+            });
+
+            // Set active color
+            const actBtn = document.getElementById(`p-${period}`);
+            actBtn.className = "period-btn px-4 py-1.5 rounded-full text-primary font-bold bg-white/10 shadow-sm transition-all duration-300";
+
+            // Update SVG Chart D coordinates
+            const data = CHART_PATHS[period];
+            const pathConf = document.getElementById("chart-path-confidence");
+            const pathTech = document.getElementById("chart-path-technical");
+
+            pathConf.setAttribute("d", data.confidence);
+            pathTech.setAttribute("d", data.technical);
+
+            // Re-trigger SVG draw animation
+            pathConf.style.strokeDashoffset = '1000';
+            pathTech.style.strokeDashoffset = '1000';
+            requestAnimationFrame(() => {
+                pathConf.style.strokeDashoffset = '0';
+                pathTech.style.strokeDashoffset = '0';
+            });
+
+            // Render interactive nodes and dates in standard axis labels
+            updateXAxisLabels(data.dates);
+            renderChartNodes(data);
+        }
+
+        function updateXAxisLabels(datesList) {
+            const axisContainer = document.querySelector("main flex.justify-between.font-label-md");
+            if (axisContainer) {
+                const spans = axisContainer.querySelectorAll("span");
+                datesList.forEach((d, i) => {
+                    if (spans[i]) spans[i].innerText = d;
+                });
+            }
+        }
+
+        // Render interactive circles to hover over
+        function renderChartNodes(data) {
+            const group = document.getElementById("chart-nodes-group");
+            group.innerHTML = "";
+
+            // Mapping nodes locations manually along typical paths indices
+            const confPoints = [
+                { x: 10, y: 180, label: "Confidence", val: data.confVals[0] },
+                { x: 200, y: 150, label: "Confidence", val: data.confVals[1] },
+                { x: 400, y: 125, label: "Confidence", val: data.confVals[2] },
+                { x: 600, y: 100, label: "Confidence", val: data.confVals[3] },
+                { x: 790, y: 25, label: "Confidence", val: data.confVals[4] }
+            ];
+
+            const techPoints = [
+                { x: 10, y: 190, label: "Technical Accuracy", val: data.techVals[0] },
+                { x: 200, y: 160, label: "Technical Accuracy", val: data.techVals[1] },
+                { x: 400, y: 110, label: "Technical Accuracy", val: data.techVals[2] },
+                { x: 600, y: 70, label: "Technical Accuracy", val: data.techVals[3] },
+                { x: 790, y: 40, label: "Technical Accuracy", val: data.techVals[4] }
+            ];
+
+            const dates = data.dates;
+
+            // Render confidence node circles
+            confPoints.forEach((p, i) => {
+                const node = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+                node.setAttribute("cx", p.x);
+                node.setAttribute("cy", p.y);
+                node.setAttribute("r", "6");
+                node.setAttribute("class", "fill-floral-pink stroke-black stroke-2 cursor-pointer hover:scale-150 transition-all duration-300");
+                node.addEventListener("mouseenter", (e) => showTooltip(e, dates[i], `${p.label}: ${p.val}%`));
+                node.addEventListener("mouseleave", hideTooltip);
+                group.appendChild(node);
+            });
+
+            // Render technical node circles
+            techPoints.forEach((p, i) => {
+                const node = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+                node.setAttribute("cx", p.x);
+                node.setAttribute("cy", p.y);
+                node.setAttribute("r", "6");
+                node.setAttribute("class", "fill-luminous-gold stroke-black stroke-2 cursor-pointer hover:scale-150 transition-all duration-300");
+                node.addEventListener("mouseenter", (e) => showTooltip(e, dates[i], `${p.label}: ${p.val}%`));
+                node.addEventListener("mouseleave", hideTooltip);
+                group.appendChild(node);
+            });
+        }
+
+        // Floating tooltip triggers
+        function showTooltip(e, date, value) {
+            const tooltip = document.getElementById("chart-tooltip-hover");
+            document.getElementById("tooltip-date").innerText = date;
+            document.getElementById("tooltip-value").innerText = value;
+            
+            tooltip.classList.remove("hidden");
+
+            // Absolute mouse positioning
+            const rect = e.target.getBoundingClientRect();
+            const parentRect = e.target.parentElement.parentElement.getBoundingClientRect();
+            const x = rect.left - parentRect.left + 15;
+            const y = rect.top - parentRect.top - 45;
+
+            tooltip.style.left = `${x}px`;
+            tooltip.style.top = `${y}px`;
+        }
+
+        function hideTooltip() {
+            document.getElementById("chart-tooltip-hover").classList.add("hidden");
+        }
+
+        // Render Scheduled upcoming trials list
+        function renderUpcomingTrials() {
+            try {
+                activeTrialsList = JSON.parse(localStorage.getItem("lumina_trials")) || [];
+            } catch(e) {
+                activeTrialsList = [];
+            }
+
+            if (activeTrialsList.length === 0) {
+                activeTrialsList = [...DEFAULT_TRIALS];
+                localStorage.setItem("lumina_trials", JSON.stringify(activeTrialsList));
+            }
+
+            const feed = document.getElementById("upcoming-trials-feed");
+            feed.innerHTML = "";
+
+            activeTrialsList.forEach((trial) => {
+                const dateObj = new Date(trial.date);
+                const dayStr = dateObj.toLocaleDateString("en-US", { month: "short", day: "numeric" });
+                
+                const item = document.createElement("div");
+                item.className = "group liquid-glass p-4 rounded-lg border-white/5 hover:bg-white/5 transition-all cursor-pointer relative overflow-hidden";
+                item.innerHTML = `
+                    <button onclick="deleteTrial('${trial.id}', event)" class="absolute top-2 right-2 text-on-surface-variant hover:text-error opacity-0 group-hover:opacity-100 transition-opacity">
+                        <span class="material-symbols-outlined text-sm font-bold">close</span>
+                    </button>
+                    <div onclick="toggleTrialExpansion('${trial.id}')" class="flex justify-between items-start mb-2">
+                        <span class="font-label-sm text-label-sm text-floral-pink uppercase tracking-widest font-bold">${dayStr}</span>
+                        <span class="font-label-md text-label-md text-on-surface-variant">${trial.time}</span>
+                    </div>
+                    <h4 onclick="toggleTrialExpansion('${trial.id}')" class="font-body-md text-body-md text-on-surface font-bold group-hover:text-primary transition-colors">${trial.role}</h4>
+                    <div onclick="toggleTrialExpansion('${trial.id}')" class="flex items-center gap-2 mt-3 text-xs text-on-surface-variant">
+                        <span class="w-1.5 h-1.5 rounded-full bg-primary shrink-0"></span>
+                        <span>Mentor "${trial.mentor}" • ${trial.type}</span>
+                    </div>
+                    <!-- Detailed collapsible expandable view -->
+                    <div id="desc-${trial.id}" class="hidden mt-4 pt-3 border-t border-white/5 text-xs text-on-surface-variant leading-relaxed">
+                        <p class="font-bold text-white uppercase tracking-wider text-[9px] mb-1">Pre-Simulation Instructions</p>
+                        "Ensure your microphone parameters are synced. Arrive 5 minutes prior to engage correct pipeline structures."
+                    </div>
+                `;
+                feed.appendChild(item);
+            });
+        }
+
+        // Expand/Collapse trial detail
+        function toggleTrialExpansion(id) {
+            const el = document.getElementById(`desc-${id}`);
+            if (el.classList.contains("hidden")) {
+                el.classList.remove("hidden");
+            } else {
+                el.classList.add("hidden");
+            }
+        }
+
+        // Schedule new trial triggers
+        function toggleScheduleModal() {
+            const modal = document.getElementById("schedule-modal-overlay");
+            if (modal.classList.contains("hidden")) {
+                modal.className = "fixed inset-0 bg-black/60 backdrop-blur-md flex items-center justify-center z-50 p-6 animate-fade-in";
+            } else {
+                modal.className = "fixed inset-0 bg-black/60 backdrop-blur-md hidden items-center justify-center z-50 p-6";
+            }
+        }
+
+        function handleScheduleForm(e) {
+            e.preventDefault();
+            
+            const newTrial = {
+                id: `trial-${Date.now()}`,
+                role: document.getElementById("sched-role").value.trim(),
+                date: document.getElementById("sched-date").value,
+                time: document.getElementById("sched-time").value,
+                mentor: document.getElementById("sched-mentor").value,
+                type: document.getElementById("sched-type").value
+            };
+
+            activeTrialsList.unshift(newTrial);
+            localStorage.setItem("lumina_trials", JSON.stringify(activeTrialsList));
+
+            // Reset inputs & close modal
+            document.getElementById("schedule-form").reset();
+            toggleScheduleModal();
+            renderUpcomingTrials();
+        }
+
+        // Delete Trial from list
+        function deleteTrial(id, event) {
+            event.stopPropagation();
+            if (confirm("Are you sure you want to cancel this scheduled simulation trial?")) {
+                activeTrialsList = activeTrialsList.filter(t => t.id !== id);
+                localStorage.setItem("lumina_trials", JSON.stringify(activeTrialsList));
+                renderUpcomingTrials();
+            }
+        }
+
+        // Badge Diagnostic Details Modal
+        function openBadgeDetails(title, desc, criteria, progress, status, earned) {
+            document.getElementById("badge-modal-title").innerText = title;
+            document.getElementById("badge-modal-desc").innerText = desc;
+            document.getElementById("badge-modal-criteria").innerText = criteria;
+            document.getElementById("badge-modal-progress-text").innerText = `${progress}%`;
+            document.getElementById("badge-modal-progress-bar").style.width = `${progress}%`;
+            document.getElementById("badge-modal-status-badge").innerText = status;
+
+            const iconContainer = document.getElementById("badge-modal-icon-container");
+            const icon = document.getElementById("badge-modal-icon");
+
+            // Set dynamic icon styles based on badge status
+            if (earned === "Locked") {
+                iconContainer.className = "w-24 h-24 rounded-full mx-auto flex items-center justify-center mb-6 bg-white/5 border border-white/10 grayscale";
+                icon.className = "material-symbols-outlined text-4xl text-on-surface-variant";
+                document.getElementById("badge-modal-earned-row").classList.add("hidden");
+                document.getElementById("badge-modal-progress-row").classList.remove("hidden");
+            } else {
+                iconContainer.className = "w-24 h-24 rounded-full mx-auto flex items-center justify-center mb-6 bg-primary/10 border border-primary/30 shadow-2xl";
+                icon.className = "material-symbols-outlined text-4xl text-primary animate-pulse";
+                document.getElementById("badge-modal-earned-row").classList.remove("hidden");
+                document.getElementById("badge-modal-earned-date").innerText = earned;
+                document.getElementById("badge-modal-progress-row").classList.add("hidden");
+            }
+
+            // Set icon glyph
+            const iconMap = {
+                "Clear Articulator": "auto_awesome",
+                "Tech Titan": "verified",
+                "Calm Under Pressure": "psychology",
+                "7-Day Streak": "stars",
+                "Team Player": "diversity_3",
+                "Career Catalyst": "rocket_launch"
+            };
+            icon.innerText = iconMap[title] || "verified";
+
+            document.getElementById("badge-modal-overlay").className = "fixed inset-0 bg-black/60 backdrop-blur-md flex items-center justify-center z-50 p-6 animate-fade-in";
+        }
+
+        function closeBadgeModal() {
+            document.getElementById("badge-modal-overlay").className = "fixed inset-0 bg-black/60 backdrop-blur-md hidden items-center justify-center z-50 p-6";
+        }
+
+        // Printable HTML-styled Summary Report
+        function downloadPDFReport() {
+            alert("Lumina AI Growth summary finalized. Sending portfolio snapshot to printer diagnostics.");
+            window.print();
+        }
+    </script>
+</body>
+</html>

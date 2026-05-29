@@ -1,0 +1,736 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Lumina AI - Resume & Profile Analyzer</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Barlow:wght@300;400;500;700&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "surface-variant": "#3a3336",
+                        "secondary": "#e2c62d",
+                        "surface-tint": "#ffaeda",
+                        "outline": "#9d8c93",
+                        "on-primary": "#541a3f",
+                        "outline-variant": "#514349",
+                        "surface-container-high": "#2f282b",
+                        "surface-container-highest": "#3a3336",
+                        "on-secondary-fixed": "#211b00",
+                        "luminous-gold": "#FBBF24",
+                        "inverse-on-surface": "#352f31",
+                        "inverse-primary": "#8a486f",
+                        "space-obsidian": "#000000",
+                        "on-tertiary": "#133801",
+                        "error-container": "#93000a",
+                        "tertiary-fixed-dim": "#a6d38b",
+                        "ethereal-purple": "#A855F7",
+                        "background": "#171214",
+                        "error": "#ffb4ab",
+                        "tertiary-container": "#a0cd85",
+                        "secondary-container": "#c1a800",
+                        "on-tertiary-container": "#31581d",
+                        "surface-dim": "#171214",
+                        "inverse-surface": "#ecdfe3",
+                        "on-tertiary-fixed": "#072100",
+                        "surface-bright": "#3f373a",
+                        "surface-container-lowest": "#120d0f",
+                        "on-error": "#690005",
+                        "on-secondary": "#393000",
+                        "on-primary-container": "#78395f",
+                        "glass-border": "rgba(255, 255, 255, 0.45)",
+                        "surface-container-low": "#201a1d",
+                        "on-tertiary-fixed-variant": "#2a5016",
+                        "floral-pink": "#F472B6",
+                        "on-background": "#ecdfe3",
+                        "primary": "#ffcfe6",
+                        "on-secondary-container": "#483d00",
+                        "space-charcoal": "#121212",
+                        "primary-container": "#f9a8d4",
+                        "on-surface-variant": "#d5c1c9",
+                        "surface-container": "#241e21",
+                        "primary-fixed": "#ffd8ea",
+                        "primary-fixed-dim": "#ffaeda",
+                        "on-surface": "#ecdfe3",
+                        "secondary-fixed-dim": "#e2c62d",
+                        "tertiary-fixed": "#c1f0a4",
+                        "on-error-container": "#ffdad6",
+                        "on-secondary-fixed-variant": "#524600",
+                        "tertiary": "#bbe99f",
+                        "on-primary-fixed-variant": "#6f3157",
+                        "secondary-fixed": "#ffe24c",
+                        "surface": "#171214",
+                        "on-primary-fixed": "#3a0329"
+                    },
+                    borderRadius: {
+                        DEFAULT: "1rem",
+                        lg: "2rem",
+                        xl: "3rem",
+                        full: "9999px"
+                    },
+                    spacing: {
+                        gutter: "1.5rem",
+                        "container-max": "1280px",
+                        "margin-mobile": "1.5rem",
+                        "section-gap": "8rem",
+                        "margin-desktop": "5rem"
+                    },
+                    fontFamily: {
+                        "display-lg-mobile": ["Instrument Serif"],
+                        "label-sm": ["Barlow"],
+                        "label-md": ["Barlow"],
+                        "body-md": ["Barlow"],
+                        "headline-lg": ["Instrument Serif"],
+                        "body-lg": ["Barlow"],
+                        "headline-md": ["Instrument Serif"],
+                        "display-lg": ["Instrument Serif"]
+                    },
+                    fontSize: {
+                        "display-lg-mobile": ["56px", { lineHeight: "0.9", letterSpacing: "-2px", fontWeight: "400" }],
+                        "label-sm": ["11px", { lineHeight: "1.0", letterSpacing: "0px", fontWeight: "400" }],
+                        "label-md": ["14px", { lineHeight: "1.0", letterSpacing: "0.05em", fontWeight: "500" }],
+                        "body-md": ["16px", { lineHeight: "1.5", letterSpacing: "0px", fontWeight: "400" }],
+                        "headline-lg": ["64px", { lineHeight: "0.9", letterSpacing: "-3px", fontWeight: "400" }],
+                        "body-lg": ["18px", { lineHeight: "1.4", letterSpacing: "0px", fontWeight: "300" }],
+                        "headline-md": ["40px", { lineHeight: "1.0", letterSpacing: "-1px", fontWeight: "400" }],
+                        "display-lg": ["88px", { lineHeight: "0.8", letterSpacing: "-4px", fontWeight: "400" }]
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #000000;
+            color: #ecdfe3;
+            overflow-x: hidden;
+        }
+
+        .liquid-glass {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(24px);
+            border: 1.4px solid rgba(255, 255, 255, 0.1);
+            box-shadow: inset 0 1px 1px rgba(255,255,255,0.1);
+        }
+
+        .liquid-glass-strong {
+            background: rgba(255, 255, 255, 0.95);
+            color: #000;
+            box-shadow: 0 0 40px rgba(255, 207, 230, 0.3);
+        }
+
+        .cosmic-glow {
+            position: fixed;
+            width: 80vw;
+            height: 80vh;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(244,114,182,0.15) 0%, rgba(251,191,36,0.05) 50%, transparent 100%);
+            filter: blur(80px);
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        .progress-ring__circle {
+            transition: stroke-dashoffset 0.8s ease-in-out;
+            transform: rotate(-90deg);
+            transform-origin: 50% 50%;
+        }
+
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+            display: inline-block;
+            vertical-align: middle;
+        }
+
+        @keyframes pulse-soft {
+            0%, 100% { opacity: 0.6; transform: scale(1); }
+            50% { opacity: 0.9; transform: scale(1.02); }
+        }
+
+        .animate-pulse-glow {
+            animation: pulse-soft 4s infinite ease-in-out;
+        }
+
+        .border-liquid {
+            border-image: linear-gradient(to bottom, rgba(255,255,255,0.4), rgba(255,255,255,0.05), rgba(255,255,255,0.4)) 1;
+        }
+        
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body class="font-body-md text-body-md selection:bg-floral-pink/30 relative">
+    <!-- Environmental Backgrounds -->
+    <div class="cosmic-glow -top-1/4 -left-1/4"></div>
+    <div class="cosmic-glow -bottom-1/4 -right-1/4 animate-pulse-glow" style="background: radial-gradient(circle, rgba(251,191,36,0.1) 0%, transparent 70%);"></div>
+    
+    <!-- Top Navigation -->
+    <nav class="fixed top-6 left-1/2 -translate-x-1/2 w-[90%] max-w-7xl rounded-full border border-glass-border px-8 py-3 bg-surface-container/30 backdrop-blur-[50px] shadow-2xl shadow-space-obsidian/50 flex justify-between items-center z-40">
+        <div class="flex items-center gap-2 cursor-pointer" onclick="navigateParent('home')">
+            <span class="font-display-lg text-headline-md text-primary drop-shadow-[0_0_15px_rgba(255,207,230,0.5)]">Lumina AI</span>
+        </div>
+        <div class="hidden md:flex items-center gap-8">
+            <a class="text-on-surface-variant hover:text-primary transition-colors duration-300 font-label-md" href="#" onclick="navigateParent('simulator')">Simulate</a>
+            <a class="text-floral-pink font-bold border-b-2 border-floral-pink pb-1 font-label-md" href="#" onclick="navigateParent('resume')">Resume</a>
+            <a class="text-on-surface-variant hover:text-primary transition-colors duration-300 font-label-md" href="#" onclick="navigateParent('growth')">Growth</a>
+            <a class="text-on-surface-variant hover:text-primary transition-colors duration-300 font-label-md" href="#" onclick="navigateParent('home')">Home</a>
+        </div>
+        <div class="flex items-center gap-4">
+            <span class="material-symbols-outlined text-on-surface-variant cursor-pointer hover:text-primary transition-all" onclick="navigateParent('growth')">account_circle</span>
+            <button onclick="navigateParent('simulator')" class="bg-primary text-on-primary-fixed px-6 py-2 rounded-full font-label-md hover:scale-105 transition-all active:scale-95">Get Started</button>
+        </div>
+    </nav>
+
+    <!-- Main Content Grid -->
+    <main class="pt-32 pb-40 px-6 max-w-7xl mx-auto z-10 relative">
+        <header class="mb-12">
+            <span class="text-floral-pink font-label-md text-label-md uppercase tracking-[0.2em] mb-2 block">Cognitive Parsing Pipeline</span>
+            <h1 class="font-display-lg text-display-lg mb-2">Resume Intelligence</h1>
+            <p class="font-body-lg text-body-lg text-on-surface-variant max-w-2xl">Elevate your career trajectory with our AI-powered analysis. We blend algorithmic precision with cinematic insight.</p>
+        </header>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+            <!-- ATS Score Card (Left) -->
+            <div class="lg:col-span-5 liquid-glass rounded-lg p-10 flex flex-col items-center justify-center relative overflow-hidden group min-h-[460px]">
+                <div class="absolute top-0 right-0 w-32 h-32 bg-primary/10 blur-3xl group-hover:bg-primary/20 transition-all"></div>
+                <h3 class="font-label-md text-label-md uppercase tracking-[0.2em] mb-8 text-on-surface-variant">ATS Optimization Score</h3>
+                
+                <div class="relative flex items-center justify-center">
+                    <svg class="w-64 h-64">
+                        <circle class="text-white/5" cx="128" cy="128" fill="transparent" r="120" stroke="currentColor" stroke-width="8"></circle>
+                        <circle id="ats-progress-ring" class="progress-ring__circle text-floral-pink" cx="128" cy="128" fill="transparent" r="120" stroke="currentColor" stroke-dasharray="753.98" stroke-dashoffset="753.98" stroke-linecap="round" stroke-width="8"></circle>
+                    </svg>
+                    <div class="absolute flex flex-col items-center">
+                        <span id="ats-score-display" class="font-display-lg text-[88px] leading-none text-primary">--</span>
+                        <span id="ats-score-label" class="font-label-md text-on-surface-variant mt-2">Awaiting Upload</span>
+                    </div>
+                </div>
+
+                <div class="mt-10 grid grid-cols-2 gap-12 w-full border-t border-white/5 pt-8 text-center">
+                    <div>
+                        <span class="block font-label-sm text-on-surface-variant mb-1 uppercase tracking-wider">Keywords</span>
+                        <span id="keyword-score-display" class="font-headline-md text-headline-md text-luminous-gold">--</span>
+                    </div>
+                    <div>
+                        <span class="block font-label-sm text-on-surface-variant mb-1 uppercase tracking-wider">Structure</span>
+                        <span id="structure-score-display" class="font-headline-md text-headline-md text-floral-pink">--</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Upload & Suggestions Column (Right) -->
+            <div class="lg:col-span-7 flex flex-col gap-8">
+                
+                <!-- Working Hidden File Input & Upload Card -->
+                <input type="file" id="resume-file-uploader" class="hidden" accept=".pdf,.docx,.txt" />
+                <div onclick="triggerFileSelect()" id="dropzone-area" class="liquid-glass rounded-lg p-8 border-dashed border-2 border-white/10 hover:border-primary/40 transition-all cursor-pointer group relative overflow-hidden flex items-center justify-center min-h-[140px]">
+                    <div id="dropzone-default-view" class="flex items-center gap-6 w-full">
+                        <div class="w-16 h-16 rounded-xl bg-white/5 flex items-center justify-center group-hover:scale-110 transition-transform shrink-0">
+                            <span class="material-symbols-outlined text-4xl text-primary">upload_file</span>
+                        </div>
+                        <div>
+                            <h4 id="upload-card-title" class="font-headline-md text-2xl mb-1 text-white">Upload Resume</h4>
+                            <p id="upload-card-subtitle" class="text-on-surface-variant font-body-md">Drag and drop or click to upload (PDF, DOCX, TXT)</p>
+                        </div>
+                    </div>
+
+                    <!-- Upload / Analyzing Progress Indicator -->
+                    <div id="dropzone-progress-view" class="hidden flex flex-col items-center justify-center gap-3 text-center">
+                        <div class="w-12 h-12 rounded-full border-4 border-primary/20 border-t-primary animate-spin"></div>
+                        <p id="analysis-step-text" class="text-primary font-label-md text-xs uppercase tracking-[0.25em] animate-pulse">Running Semantic Parsing...</p>
+                    </div>
+                    <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
+                </div>
+
+                <!-- Improvement Suggestions List -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    
+                    <!-- Content Suggestions Card -->
+                    <div class="liquid-glass rounded-lg p-6 flex flex-col justify-between">
+                        <div>
+                            <div class="w-10 h-10 rounded-full bg-floral-pink/10 flex items-center justify-center mb-4 border border-floral-pink/20">
+                                <span class="material-symbols-outlined text-floral-pink text-xl">auto_fix_high</span>
+                            </div>
+                            <h5 class="font-label-md text-on-surface font-bold mb-4 uppercase tracking-wider">Content Enhancements</h5>
+                            
+                            <ul id="content-suggestions-list" class="space-y-4 text-on-surface-variant text-sm">
+                                <li class="flex gap-3 items-start justify-between group/item">
+                                    <div class="flex gap-2">
+                                        <span class="material-symbols-outlined text-luminous-gold text-sm mt-1">circle</span>
+                                        <span>Quantify impact in 'Lead Engineer' roles with revenue margins.</span>
+                                    </div>
+                                    <button onclick="applyEnhancement(this, 'Lead Engineer metrics updated')" class="text-primary opacity-0 group-hover/item:opacity-100 transition-opacity text-xs font-bold uppercase shrink-0 self-center">Apply</button>
+                                </li>
+                                <li class="flex gap-3 items-start justify-between group/item">
+                                    <div class="flex gap-2">
+                                        <span class="material-symbols-outlined text-luminous-gold text-sm mt-1">circle</span>
+                                        <span>Replace passive verbs like 'helped' with 'orchestrated'.</span>
+                                    </div>
+                                    <button onclick="applyEnhancement(this, 'Active verb replacements mapped')" class="text-primary opacity-0 group-hover/item:opacity-100 transition-opacity text-xs font-bold uppercase shrink-0 self-center">Apply</button>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- LinkedIn Insights Card -->
+                    <div class="liquid-glass rounded-lg p-6 flex flex-col justify-between">
+                        <div>
+                            <div class="w-10 h-10 rounded-full bg-luminous-gold/10 flex items-center justify-center mb-4 border border-luminous-gold/20">
+                                <span class="material-symbols-outlined text-luminous-gold text-xl">visibility</span>
+                            </div>
+                            <h5 class="font-label-md text-on-surface font-bold mb-4 uppercase tracking-wider">Social Presence Insights</h5>
+                            
+                            <div class="flex flex-col gap-4 text-sm text-on-surface-variant">
+                                <p id="linkedin-insight-desc" class="italic opacity-85">"Integrating an 'AI Solutions Architect' header increases recruiter search resonance by 14%."</p>
+                                <div onclick="toggleChecklistModal()" class="bg-white/5 rounded-full p-1 pl-4 flex items-center justify-between cursor-pointer hover:bg-white/10 border border-white/5 transition-all">
+                                    <span class="text-xs font-label-md uppercase tracking-wider text-on-surface opacity-80">Checklist Progress</span>
+                                    <span id="checklist-tracker-pill" class="bg-secondary text-on-secondary px-3 py-1 rounded-full text-[10px] font-bold">3 of 8 Done</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Profile & Checklist Section (Bottom) -->
+            <section class="lg:col-span-12 liquid-glass rounded-lg p-10 relative mt-8 overflow-hidden">
+                <div class="flex flex-col md:flex-row items-center gap-12 relative z-10">
+                    
+                    <!-- Clickable Profile Photo Upload -->
+                    <div class="w-full md:w-1/3 flex flex-col items-center shrink-0">
+                        <div onclick="triggerPhotoSelect()" class="relative group cursor-pointer w-full max-w-[280px] h-[340px] rounded-lg overflow-hidden border border-white/10 shadow-2xl">
+                            <img id="profile-photo-element" alt="Profile" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700" src="https://lh3.googleusercontent.com/aida-public/AB6AXuibe7nTZBX7fIEy5xYF5aJHAocgcUChDmWrxz3NQJVn6HVVg-0wTgk1iaHPFYQeucflacPEXcPPDXEI3d8norUvk7WVZ68BN1IiPqZuFBpv9x7DDzPrTWfmH9IjQpNtDIjsyCBPfYyVj7TwtLkik1x1Dz2TQvssyeqZF4ynqQ9yZVN0TiimZ4h2KhGdSNiTfNoE38Xd8hFkZc89FvcpwkT2Rbl2RlrO7cxwWxFyQ6o_6g844j9yMBb-g-cAvbkHzs3SnD2zB9AIU0"/>
+                            <div class="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                                <span class="material-symbols-outlined text-white text-4xl bg-white/10 p-4 rounded-full backdrop-blur-md">add_a_photo</span>
+                            </div>
+                            <input type="file" id="profile-photo-uploader" class="hidden" accept="image/*" />
+                        </div>
+                        <p class="text-[10px] text-on-surface-variant font-label-md uppercase tracking-widest mt-3">Click photo to update avatar</p>
+                    </div>
+
+                    <!-- LinkedIn presence overview -->
+                    <div class="flex-grow">
+                        <div class="flex items-center gap-4 mb-6">
+                            <span class="bg-primary/20 text-primary border border-primary/30 px-4 py-1.5 rounded-full font-label-sm uppercase tracking-widest text-[10px]">Presence Index</span>
+                            <span id="profile-id-tracker" class="text-on-surface-variant font-label-sm text-xs">Profile ID: 9823-LMN</span>
+                        </div>
+                        <h2 class="font-display-lg text-headline-lg mb-6 leading-none italic">LinkedIn Presence Overview</h2>
+                        
+                        <div class="space-y-8">
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                                <div class="bg-white/5 p-6 rounded-lg border border-white/5">
+                                    <span class="block font-headline-md text-2xl text-luminous-gold mb-2 leading-none italic">Header Resonance</span>
+                                    <p class="text-xs text-on-surface-variant leading-relaxed">Headline scores high. Adding specific technical sub-niches (e.g. AWS, React) boosted visibility indices by 18%.</p>
+                                </div>
+                                <div class="bg-white/5 p-6 rounded-lg border border-white/5">
+                                    <span class="block font-headline-md text-2xl text-floral-pink mb-2 leading-none italic">Outbound Network</span>
+                                    <p class="text-xs text-on-surface-variant leading-relaxed">Strong density score. Recommended: engage with 4 specific alumni references in targeted Google divisions.</p>
+                                </div>
+                                <div class="bg-white/5 p-6 rounded-lg border border-white/5">
+                                    <span class="block font-headline-md text-2xl text-primary mb-2 leading-none italic">Skill Endorsement</span>
+                                    <p class="text-xs text-on-surface-variant leading-relaxed">Minor skill gaps identified in 'Distributed Systems' and 'Event-Driven Architectures'. Seek endorsement validation.</p>
+                                </div>
+                            </div>
+                            
+                            <button onclick="toggleChecklistModal()" class="liquid-glass-strong px-8 py-4 rounded-full font-label-md text-xs uppercase tracking-widest flex items-center gap-3 group active:scale-95 transition-all">
+                                Manage Optimization Checklist
+                                <span class="material-symbols-outlined text-sm group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform">north_east</span>
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- SYSTEM GLASS MODAL: Profile Checklist Overlay -->
+    <div id="checklist-modal-overlay" class="fixed inset-0 bg-black/75 backdrop-blur-md hidden items-center justify-center z-50 p-6 overflow-y-auto">
+        <div class="liquid-glass p-8 md:p-12 rounded-lg max-w-2xl w-full flex flex-col gap-6 relative my-auto border border-white/10">
+            <div class="absolute -top-12 -right-12 w-48 h-48 bg-primary/10 blur-[60px] rounded-full pointer-events-none"></div>
+            
+            <div class="flex justify-between items-center border-b border-white/10 pb-4">
+                <div>
+                    <span class="text-floral-pink font-label-md text-label-md uppercase tracking-[0.2em] mb-1 block">LinkedIn SEO</span>
+                    <h3 class="font-headline-md text-[28px] text-white italic">Optimization Checklist</h3>
+                </div>
+                <button onclick="toggleChecklistModal()" class="w-8 h-8 rounded-full bg-white/5 border border-white/10 flex items-center justify-center hover:bg-white/15 transition-all">
+                    <span class="material-symbols-outlined text-sm">close</span>
+                </button>
+            </div>
+
+            <!-- Progress Meter -->
+            <div class="bg-white/5 p-4 rounded-lg border border-white/5">
+                <div class="flex justify-between mb-2 text-xs font-bold uppercase tracking-wider text-on-surface-variant">
+                    <span>Task Completion Tracker</span>
+                    <span id="modal-completion-ratio" class="text-primary">3 of 8 Tasks Done (37%)</span>
+                </div>
+                <div class="h-2 w-full bg-white/5 rounded-full overflow-hidden">
+                    <div id="modal-completion-bar" class="h-full bg-primary" style="width: 37%"></div>
+                </div>
+            </div>
+
+            <!-- Scrollable 8 Checklist Items -->
+            <div class="space-y-4 max-h-[300px] overflow-y-auto custom-scrollbar pr-2">
+                <label class="flex items-start gap-4 p-4 bg-white/5 rounded-lg border border-white/5 cursor-pointer hover:bg-white/10 transition-colors">
+                    <input type="checkbox" data-index="0" onchange="onCheckboxChange(this)" class="form-checkbox text-floral-pink bg-black border-white/20 rounded focus:ring-0 mt-0.5" />
+                    <div class="text-sm">
+                        <p class="font-bold text-white leading-snug">1. Headline optimization</p>
+                        <p class="text-xs text-on-surface-variant mt-1">Embed key index terms like 'AI Architect' or 'Principal SWE' to rank in premium headhunter indexes.</p>
+                    </div>
+                </label>
+                <label class="flex items-start gap-4 p-4 bg-white/5 rounded-lg border border-white/5 cursor-pointer hover:bg-white/10 transition-colors">
+                    <input type="checkbox" data-index="1" onchange="onCheckboxChange(this)" class="form-checkbox text-floral-pink bg-black border-white/20 rounded focus:ring-0 mt-0.5" />
+                    <div class="text-sm">
+                        <p class="font-bold text-white leading-snug">2. Professional summary sync</p>
+                        <p class="text-xs text-on-surface-variant mt-1">Compose a metrics-driven bio statement showing product margins and technical scale records.</p>
+                    </div>
+                </label>
+                <label class="flex items-start gap-4 p-4 bg-white/5 rounded-lg border border-white/5 cursor-pointer hover:bg-white/10 transition-colors">
+                    <input type="checkbox" data-index="2" onchange="onCheckboxChange(this)" class="form-checkbox text-floral-pink bg-black border-white/20 rounded focus:ring-0 mt-0.5" />
+                    <div class="text-sm">
+                        <p class="font-bold text-white leading-snug">3. STAR bulleted layouts</p>
+                        <p class="text-xs text-on-surface-variant mt-1">Structure experience blocks highlighting specific challenges, systems deployed, and revenue outputs.</p>
+                    </div>
+                </label>
+                <label class="flex items-start gap-4 p-4 bg-white/5 rounded-lg border border-white/5 cursor-pointer hover:bg-white/10 transition-colors">
+                    <input type="checkbox" data-index="3" onchange="onCheckboxChange(this)" class="form-checkbox text-floral-pink bg-black border-white/20 rounded focus:ring-0 mt-0.5" />
+                    <div class="text-sm">
+                        <p class="font-bold text-white leading-snug">4. Technical skill endorsements</p>
+                        <p class="text-xs text-on-surface-variant mt-1">List 5+ validated structural categories like 'Distributed Systems' and seek mutual endorsee nods.</p>
+                    </div>
+                </label>
+                <label class="flex items-start gap-4 p-4 bg-white/5 rounded-lg border border-white/5 cursor-pointer hover:bg-white/10 transition-colors">
+                    <input type="checkbox" data-index="4" onchange="onCheckboxChange(this)" class="form-checkbox text-floral-pink bg-black border-white/20 rounded focus:ring-0 mt-0.5" />
+                    <div class="text-sm">
+                        <p class="font-bold text-white leading-snug">5. Outbound recommendations</p>
+                        <p class="text-xs text-on-surface-variant mt-1">Gather 3 recommendation briefs from former technical leads and management anchors.</p>
+                    </div>
+                </label>
+                <label class="flex items-start gap-4 p-4 bg-white/5 rounded-lg border border-white/5 cursor-pointer hover:bg-white/10 transition-colors">
+                    <input type="checkbox" data-index="5" onchange="onCheckboxChange(this)" class="form-checkbox text-floral-pink bg-black border-white/20 rounded focus:ring-0 mt-0.5" />
+                    <div class="text-sm">
+                        <p class="font-bold text-white leading-snug">6. Public vanity URL</p>
+                        <p class="text-xs text-on-surface-variant mt-1">Refine and clean public linkedin routing parameters (e.g. rename path suffix parameters to just name).</p>
+                    </div>
+                </label>
+                <label class="flex items-start gap-4 p-4 bg-white/5 rounded-lg border border-white/5 cursor-pointer hover:bg-white/10 transition-colors">
+                    <input type="checkbox" data-index="6" onchange="onCheckboxChange(this)" class="form-checkbox text-floral-pink bg-black border-white/20 rounded focus:ring-0 mt-0.5" />
+                    <div class="text-sm">
+                        <p class="font-bold text-white leading-snug">7. Open to work visibility</p>
+                        <p class="text-xs text-on-surface-variant mt-1">Set candidate tags correctly to bypass filters and land in executive recruitment logs.</p>
+                    </div>
+                </label>
+                <label class="flex items-start gap-4 p-4 bg-white/5 rounded-lg border border-white/5 cursor-pointer hover:bg-white/10 transition-colors">
+                    <input type="checkbox" data-index="7" onchange="onCheckboxChange(this)" class="form-checkbox text-floral-pink bg-black border-white/20 rounded focus:ring-0 mt-0.5" />
+                    <div class="text-sm">
+                        <p class="font-bold text-white leading-snug">8. High-Res headshot profile photo</p>
+                        <p class="text-xs text-on-surface-variant mt-1">Ensure your image utilizes clean professional bokeh grids. Upload a high-res photo now.</p>
+                    </div>
+                </label>
+            </div>
+
+            <button onclick="toggleChecklistModal()" class="liquid-glass-strong w-full py-4 rounded-full font-label-md text-xs uppercase tracking-widest text-center hover:scale-[1.02] active:scale-95 transition-all">
+                Save & Close Checklist
+            </button>
+        </div>
+    </div>
+
+    <!-- SYSTEM TOAST POPUP: Success Alerts -->
+    <div id="applied-toast-alert" class="fixed top-12 left-1/2 -translate-x-1/2 liquid-glass-strong px-6 py-3 rounded-full flex items-center gap-2 border border-primary/40 text-black shadow-2xl text-xs uppercase tracking-widest font-bold z-50 hidden transition-all duration-300 transform scale-90 opacity-0">
+        <span class="material-symbols-outlined text-sm font-bold text-floral-pink">verified</span>
+        <span id="toast-message-body">Suggestion successfully applied!</span>
+    </div>
+
+    <!-- CORE LOGIC & INTERACTIONS -->
+    <script>
+        // State variables
+        let atsScore = 82;
+        let keywordScore = 94;
+        let structureScore = 78;
+        let documentUploadedName = "";
+        let checklistState = [true, false, true, false, false, false, false, true]; // Seed checklist
+
+        // Parent navigation bridge
+        function navigateParent(page) {
+            window.parent.postMessage({ action: "navigate", page: page }, "*");
+        }
+
+        // Initialize display score animations
+        window.addEventListener('DOMContentLoaded', () => {
+            loadPersistedData();
+            updateScoresRing();
+            initDragAndDrop();
+            initCheckboxes();
+        });
+
+        // Load persisted states from localStorage
+        function loadPersistedData() {
+            try {
+                const data = JSON.parse(localStorage.getItem("lumina_resume_analysis"));
+                if (data) {
+                    atsScore = data.atsScore || 82;
+                    keywordScore = data.keywordScore || 94;
+                    structureScore = data.structureScore || 78;
+                    documentUploadedName = data.fileName || "";
+                    if (data.checklist) checklistState = data.checklist;
+
+                    if (documentUploadedName) {
+                        document.getElementById("upload-card-title").innerText = documentUploadedName;
+                        document.getElementById("upload-card-subtitle").innerText = "Analyze another document";
+                    }
+                }
+            } catch(e) {
+                console.log("Load failed", e);
+            }
+        }
+
+        // Update progress rings with SVG calculations
+        function updateScoresRing() {
+            const circle = document.getElementById("ats-progress-ring");
+            const scoreDisplay = document.getElementById("ats-score-display");
+            const labelDisplay = document.getElementById("ats-score-label");
+
+            const radius = circle.r.baseVal.value;
+            const circumference = radius * 2 * Math.PI;
+
+            circle.style.strokeDasharray = `${circumference} ${circumference}`;
+            
+            // Score animation sequence
+            let current = 0;
+            const interval = setInterval(() => {
+                if (current >= atsScore) {
+                    clearInterval(interval);
+                    // Set final value precisely
+                    scoreDisplay.innerText = atsScore;
+                    const offset = circumference - (atsScore / 100 * circumference);
+                    circle.style.strokeDashoffset = offset;
+                } else {
+                    current += 2;
+                    scoreDisplay.innerText = Math.min(atsScore, current);
+                    const offset = circumference - (Math.min(atsScore, current) / 100 * circumference);
+                    circle.style.strokeDashoffset = offset;
+                }
+            }, 25);
+
+            // Display text descriptors
+            document.getElementById("keyword-score-display").innerText = `${keywordScore}%`;
+            document.getElementById("structure-score-display").innerText = `${structureScore}%`;
+
+            if (atsScore >= 90) {
+                labelDisplay.innerText = "Elite Caliber";
+                labelDisplay.className = "font-label-md text-primary mt-2 uppercase tracking-widest font-bold";
+            } else if (atsScore >= 80) {
+                labelDisplay.innerText = "Strong Potential";
+                labelDisplay.className = "font-label-md text-floral-pink mt-2 uppercase tracking-widest";
+            } else {
+                labelDisplay.innerText = "Optimization Needed";
+                labelDisplay.className = "font-label-md text-luminous-gold mt-2 uppercase tracking-widest";
+            }
+        }
+
+        // Click-triggered upload triggers
+        function triggerFileSelect() {
+            document.getElementById("resume-file-uploader").click();
+        }
+
+        document.getElementById("resume-file-uploader").addEventListener("change", (e) => {
+            if (e.target.files.length > 0) {
+                processUploadedFile(e.target.files[0]);
+            }
+        });
+
+        // Initialize drag-drop handlers
+        function initDragAndDrop() {
+            const dropzone = document.getElementById("dropzone-area");
+
+            ["dragenter", "dragover"].forEach(event => {
+                dropzone.addEventListener(event, (e) => {
+                    e.preventDefault();
+                    dropzone.classList.add("border-primary", "bg-primary/5");
+                }, false);
+            });
+
+            ["dragleave", "drop"].forEach(event => {
+                dropzone.addEventListener(event, (e) => {
+                    e.preventDefault();
+                    dropzone.classList.remove("border-primary", "bg-primary/5");
+                }, false);
+            });
+
+            dropzone.addEventListener("drop", (e) => {
+                const dt = e.dataTransfer;
+                const files = dt.files;
+                if (files.length > 0) {
+                    processUploadedFile(files[0]);
+                }
+            }, false);
+        }
+
+        // Working semantic parsing pipeline sequence (3s animation)
+        function processUploadedFile(file) {
+            documentUploadedName = file.name;
+            
+            const defView = document.getElementById("dropzone-default-view");
+            const progView = document.getElementById("dropzone-progress-view");
+            const stepText = document.getElementById("analysis-step-text");
+
+            defView.classList.add("hidden");
+            progView.classList.remove("hidden");
+
+            // Sequence timeline simulation steps
+            setTimeout(() => {
+                stepText.innerText = "Mapping Token Clusters (40%)...";
+            }, 800);
+
+            setTimeout(() => {
+                stepText.innerText = "Cross-Referencing ATS Lexicons (75%)...";
+            }, 1600);
+
+            setTimeout(() => {
+                stepText.innerText = "Generating Semantic Scores (95%)...";
+            }, 2400);
+
+            setTimeout(() => {
+                // Compute new random scores
+                atsScore = Math.floor(Math.random() * 21) + 75; // 75 - 95
+                keywordScore = Math.floor(Math.random() * 16) + 80; // 80 - 95
+                structureScore = Math.floor(Math.random() * 21) + 75; // 75 - 95
+
+                // Update Progress Rings
+                updateScoresRing();
+
+                // Swap Card Texts
+                document.getElementById("upload-card-title").innerText = documentUploadedName;
+                document.getElementById("upload-card-subtitle").innerText = `File successfully parsed. ATS Score: ${atsScore}`;
+
+                defView.classList.remove("hidden");
+                progView.classList.add("hidden");
+
+                // Save results in localStorage
+                saveCurrentData();
+
+                showSuccessToast("Resume semantic analysis completed!");
+            }, 3000);
+        }
+
+        // Apply suggestions and toast
+        function applyEnhancement(btn, message) {
+            btn.parentElement.classList.add("opacity-40", "pointer-events-none");
+            btn.remove();
+            
+            // Adjust ATS Score upwards slightly
+            atsScore = Math.min(98, atsScore + 2);
+            updateScoresRing();
+            saveCurrentData();
+
+            showSuccessToast(message);
+        }
+
+        // Click-triggered photo uploads
+        function triggerPhotoSelect() {
+            document.getElementById("profile-photo-uploader").click();
+        }
+
+        document.getElementById("profile-photo-uploader").addEventListener("change", (e) => {
+            if (e.target.files.length > 0) {
+                const reader = new FileReader();
+                reader.onload = (event) => {
+                    document.getElementById("profile-photo-element").src = event.target.result;
+                    
+                    // Mark Photo step in checklist as true
+                    checklistState[7] = true;
+                    initCheckboxes();
+                    saveCurrentData();
+                    showSuccessToast("Profile avatar successfully updated!");
+                };
+                reader.readAsDataURL(e.target.files[0]);
+            }
+        });
+
+        // Optimization Checklist Modal controls
+        function toggleChecklistModal() {
+            const overlay = document.getElementById("checklist-modal-overlay");
+            if (overlay.classList.contains("hidden")) {
+                overlay.className = "fixed inset-0 bg-black/75 backdrop-blur-md flex items-center justify-center z-50 p-6 overflow-y-auto animate-fade-in";
+            } else {
+                overlay.className = "fixed inset-0 bg-black/75 backdrop-blur-md hidden items-center justify-center z-50 p-6 overflow-y-auto";
+            }
+        }
+
+        // Synchronize and render checklist boxes
+        function initCheckboxes() {
+            const checkboxes = document.querySelectorAll("#checklist-modal-overlay input[type='checkbox']");
+            checkboxes.forEach(box => {
+                const idx = parseInt(box.dataset.index);
+                box.checked = checklistState[idx];
+            });
+            updateChecklistTracker();
+        }
+
+        function onCheckboxChange(box) {
+            const idx = parseInt(box.dataset.index);
+            checklistState[idx] = box.checked;
+            updateChecklistTracker();
+            saveCurrentData();
+        }
+
+        // Dynamically compute progress bar metrics
+        function updateChecklistTracker() {
+            const total = checklistState.length;
+            const completed = checklistState.filter(Boolean).length;
+            const percentage = Math.round((completed / total) * 100);
+
+            // Update main dashboard pill
+            document.getElementById("checklist-tracker-pill").innerText = `${completed} of ${total} Done`;
+
+            // Update modal text and bars
+            document.getElementById("modal-completion-ratio").innerText = `${completed} of ${total} Tasks Done (${percentage}%)`;
+            document.getElementById("modal-completion-bar").style.width = `${percentage}%`;
+        }
+
+        // Save states to localStorage
+        function saveCurrentData() {
+            const payload = {
+                atsScore: atsScore,
+                keywordScore: keywordScore,
+                structureScore: structureScore,
+                fileName: documentUploadedName,
+                checklist: checklistState
+            };
+            localStorage.setItem("lumina_resume_analysis", JSON.stringify(payload));
+        }
+
+        // Success Toast Notification trigger
+        function showSuccessToast(message) {
+            const toast = document.getElementById("applied-toast-alert");
+            document.getElementById("toast-message-body").innerText = message;
+
+            toast.classList.remove("hidden");
+            
+            // Trigger animation frame details
+            requestAnimationFrame(() => {
+                toast.classList.add("scale-100", "opacity-100");
+                toast.classList.remove("scale-90", "opacity-0");
+            });
+
+            setTimeout(() => {
+                toast.classList.add("scale-90", "opacity-0");
+                toast.classList.remove("scale-100", "opacity-100");
+                setTimeout(() => toast.classList.add("hidden"), 300);
+            }, 2500);
+        }
+    </script>
+</body>
+</html>
