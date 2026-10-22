@@ -13,7 +13,7 @@ Lumina AI is a comprehensive, interactive platform designed to help users prepar
 
 *   `index.html`: The main application shell with navigation and UI components.
 *   `lumina_ai_interview_simulator/`: Contains the code for the mock interview experience.
-*   `lumina_ai_resume_analyzer/`: Contains the code for the resume parsing and feedback tools.
+*   `lumina_ai_resume_analyzer/`: Contains the code for the resume parsing, and feedback tools.
 *   `lumina_ai_growth_tracker/`: Contains the code for tracking user performance and history.
 *   `lumina_ai_landing_page/`: Contains the standalone landing page design.
 
